@@ -1,6 +1,6 @@
 {
   "name": "webpack-focus",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "Focus webpack config",
   "main": "lib/index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "url": "https://github.com/KleeGroup/webpack-focus/issues"
   },
   "homepage": "https://github.com/KleeGroup/webpack-focus#readme",
-  "dependencies": {
+  "devDependencies": {
     "babel": "^5.8.23",
     "babel-core": "^5.8.25",
     "babel-loader": "^5.3.2",
