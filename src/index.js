@@ -17,9 +17,36 @@ if(missingInstall.length >0){
 }
 const MSG = `
     Your dependencies are fine, please read the documentation to use if on your project
-    import devConfig from 'webpack-focus/dev-config';
-    import productionConfig from 'webpack-focus/production-config';
-    import server from 'webpack-focus/server';
+    - Initialisation of focus web pack
+    - you can use 3 functions
+    //- devConfig, productionConfig, server
+    ## Your conf
+    /*
+    const path = require('path');
+    module.exports = {
+        entry: ['./app'],
+        directory:"src",
+        output: {
+            path: path.join(__dirname, 'dist'),
+            filename: 'focus-showcase.js',
+            publicPath: '/dist/'
+        },
+        port: 3007
+    };
+    */
+    ## Web pack dev conf
+    /*javascript
+    const focusShowcaseConf = require('./focus-showcase.webpack');
+    const devConfBuilder = require('webpack-focus').devConfig;
+    module.exports = devConfBuilder(focusShowcaseConf);
+    */
+    ## Web pack server
+    /*javascript
+    const path = require('path');
+    const serverBuilder = require('webpack-focus').server;
+    const focusShowcaseConf = require('./focus-showcase.webpack');
+    serverBuilder(focusShowcaseConf);
+    */
 `;
 console.log(MSG);
 
