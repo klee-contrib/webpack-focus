@@ -1,7 +1,7 @@
 import isInstalled from './is-installed';
 import conf from '../package.json';
 let missingInstall = [];
-for (const dep in conf.dependencies){
+for (const dep in conf.devDependencies){
     if(!isInstalled(dep)){
         missingInstall.push(dep);
     }
@@ -22,3 +22,12 @@ const MSG = `
     import server from 'webpack-focus/server';
 `;
 console.log(MSG);
+
+import devConfig from './dev-config';
+import productionConfig from './production-config';
+import server from './server';
+export default {
+    devConfig,
+    productionConfig,
+    server
+}

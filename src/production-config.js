@@ -7,7 +7,7 @@ import webpack from 'webpack';
 * @return {object}      A json object of the developer configuration.
 */
 function generateProductionConfiguration(spec = {}){
-    const {devtool, entry, name, directory, output, plugins} = spec;
+    const {devtool, entry, name, directory, output, plugins, loaders} = spec;
     return {
         devtool: devtool || 'source-map',
         entry: [
@@ -37,11 +37,34 @@ function generateProductionConfiguration(spec = {}){
             }, {
                 test: /\.json$/,
                 loaders: ['json']
-            },
-            {
+            }, {
                 test: /\.scss$/,
                 loader: 'style!css!sass'
-            }]
+            },
+            {
+                test: /\.png$/,
+                loader: 'url-loader',
+                query: { mimetype: 'image/png' }
+            },
+            {
+                test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url?limit=10000&mimetype=application/font-woff'
+            },
+            {
+                test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url?limit=10000&mimetype=application/font-woff'
+            }, {
+                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url?limit=10000&mimetype=application/octet-stream'
+            }, {
+                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'file'
+            }, {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url?limit=10000&mimetype=image/svg+xml'
+            },
+            ...loaders
+        ]
         }
     }
 }
