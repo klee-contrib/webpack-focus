@@ -1,0 +1,24 @@
+{
+  "name": "webpack-focus",
+  "version": "1.0.0",
+  "description": "Focus webpack config",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KleeGroup/webpack-focus.git"
+  },
+  "keywords": [
+    "focus",
+    "webpack",
+    "react"
+  ],
+  "author": "focus@kleegroup.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KleeGroup/webpack-focus/issues"
+  },
+  "homepage": "https://github.com/KleeGroup/webpack-focus#readme"
+}
