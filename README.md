@@ -3,6 +3,8 @@
 Focus standard loader for focus projects, as well with config and build files.
 The objective is to have dependencies set in one project for all projects and all libraries.
 
+The module will tell you what lib you need to install as `devDependencies` with an error message if the needed libraries are not present in your `package.json`.
+
 # How to use focus web pack
 
 You have 3 functions:
