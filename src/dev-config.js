@@ -8,6 +8,8 @@ import webpack from 'webpack';
 */
 function generateConfiguration(spec = {}){
     const {devtool, entry, name, directory, output, loaders, plugins, port, ...otherConf} = spec;
+    plugins = plugins || [];
+    loaders = loaders || [];
     const devConfig =  {
         devtool: devtool || 'eval',
         entry: [
