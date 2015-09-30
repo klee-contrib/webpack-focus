@@ -7,9 +7,9 @@ import webpack from 'webpack';
 * @return {object}      A json object of the developer configuration.
 */
 function generateProductionConfiguration(spec = {}){
+    spec.plugins = spec.plugins || [];
+    spec.loaders = spec.loaders || [];
     const {devtool, entry, name, directory, output, plugins, loaders, ...otherConf} = spec;
-    plugins = plugins || [];
-    loaders = loaders || [];
     return {
         devtool: devtool || 'source-map',
         entry: entry,

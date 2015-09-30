@@ -7,9 +7,10 @@ import webpack from 'webpack';
 * @return {object}      A json object of the developer configuration.
 */
 function generateConfiguration(spec = {}){
+    spec.plugins = spec.plugins || [];
+    spec.loaders = spec.loaders || [];
     const {devtool, entry, name, directory, output, loaders, plugins, port, ...otherConf} = spec;
-    plugins = plugins || [];
-    loaders = loaders || [];
+
     const devConfig =  {
         devtool: devtool || 'eval',
         entry: [
