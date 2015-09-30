@@ -7,17 +7,18 @@ import webpack from 'webpack';
 * @return {object}      A json object of the developer configuration.
 */
 function generateConfiguration(spec = {}){
-    const {devtool, entry, name, directory, output, loaders} = spec;
+    const {devtool, entry, name, directory, output, loaders, plugins, port, ...otherConf} = spec;
     const devConfig =  {
         devtool: devtool || 'eval',
         entry: [
-            'webpack-dev-server/client?http://localhost:3001',
+            `webpack-dev-server/client?http://localhost:${port}`,
             'webpack/hot/only-dev-server',
             ...entry
         ],
         output: output,
         plugins: [
-            new webpack.HotModuleReplacementPlugin()
+            new webpack.HotModuleReplacementPlugin(),
+            ...plugins
         ],
         module: {
             loaders: [
@@ -50,9 +51,11 @@ function generateConfiguration(spec = {}){
                 }, {
                     test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
                     loader: 'url?limit=10000&mimetype=image/svg+xml'
-                }
+                },
+                ...loaders
             ]
-        }
+        },
+        ...otherConf
     }
     //console.log('%j', devConfig.module.loaders);
     return devConfig;

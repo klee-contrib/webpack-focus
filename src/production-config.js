@@ -7,14 +7,10 @@ import webpack from 'webpack';
 * @return {object}      A json object of the developer configuration.
 */
 function generateProductionConfiguration(spec = {}){
-    const {devtool, entry, name, directory, output, plugins, loaders} = spec;
+    const {devtool, entry, name, directory, output, plugins, loaders, otherConf} = spec;
     return {
         devtool: devtool || 'source-map',
-        entry: [
-            'webpack-dev-server/client?http://localhost:3001',
-            'webpack/hot/only-dev-server',
-            ...entry
-        ],
+        entry: entry,
         output: output,
         plugins: [
             new webpack.optimize.OccurenceOrderPlugin(),
@@ -65,7 +61,8 @@ function generateProductionConfiguration(spec = {}){
             },
             ...loaders
         ]
-        }
+    },
+        ...otherConf
     }
 }
 export default generateProductionConfiguration;
