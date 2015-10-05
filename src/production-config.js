@@ -31,7 +31,7 @@ function generateProductionConfiguration(spec = {}){
             loaders: [
                 {
                     test: /\.js$/,
-                    loaders: ['react-hot', 'babel'],
+                    loaders: ['babel'],
                     include: directory || path.join(__dirname, 'src')
                 },
                 {
