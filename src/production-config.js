@@ -9,7 +9,7 @@ import webpack from 'webpack';
 function generateProductionConfiguration(spec = {}){
     spec.plugins = spec.plugins || [];
     spec.loaders = spec.loaders || [];
-    const {devtool, entry, name, directory, output, plugins, loaders, ...otherConf} = spec;
+    const {devtool, entry, name, directory, output, plugins, loaders,styleFileName, ...otherConf} = spec;
     return {
         devtool: devtool || 'source-map',
         entry: entry,
@@ -19,6 +19,7 @@ function generateProductionConfiguration(spec = {}){
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify('production')
             }),
+            new ExtractTextPlugin(styleFileName),
             /*new webpack.optimize.UglifyJsPlugin({
                 compressor: {
                     'screw_ie8': true,
@@ -40,11 +41,11 @@ function generateProductionConfiguration(spec = {}){
                 },
                 {
                     test: /\.scss$/,
-                    loader: 'style!css!sass'
+                    loader: loader: ExtractTextPlugin.extract('style!css!sass')
                 },
                 {
                     test: /\.css$/,
-                    loader: 'style!css'
+                    loader: ExtractTextPlugin.extract("style-loader", "css-loader")
                 },
                 {
                     test: /\.png$/,
