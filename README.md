@@ -36,7 +36,6 @@ To configure this, a good option is to use [better-npm-run]( https://www.npmjs.c
 process.env.BASE_DIR = __dirname;
 const configBuilder = require('webpack-focus').configBuilder;
 module.exports = configBuilder();
->>>>>>> Update doc
 ```
 
 ## Webpack dev server launcher
