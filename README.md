@@ -17,14 +17,13 @@ To configure this, a good option is to use [better-npm-run]( https://www.npmjs.c
 - `API_PORT` (default `8080`): API port
 - `ENTRY_FILE_PATH` (default `'./src'`): project entry file path
 - `OUTPUT_FILE_NAME` (default `'your-project-name'`): project file name
-- `PROJECT_NAME` (default `'your-project'`): project name
 - `OUTPUT_DIR` (default `'./dir'`): output directory
 - `PAGE_TITLE` (default `'You project landing page'`): webpack dev server page title
 - `ANCHOR_CLASS` (default `'your-project'`): class used to anchor the `ReactDOM.render`. Exposed globally through the variable `__ANCHOR_CLASS__`
 - `PUBLIC_PATH` (default `'/'`): path to the built files on the webpack dev server
 - `GENERATE_HTML` (default `true`): automatically generate the `index.html`
-- `BASE_DIR` (**no default, must be initialized**): project base directory. Set it programmaticaly with `process.env.BASE_DIR = __dirname;`
 - `BABELIFIED_PATH` (default `'./src'`): directory build by Babel
+- `MINIMIFY` (default `false`): minimify the sources
 
 ## Webpack configuration builder
 
@@ -33,7 +32,6 @@ To configure this, a good option is to use [better-npm-run]( https://www.npmjs.c
 ### Sample usage
 
 ```js
-process.env.BASE_DIR = __dirname;
 const configBuilder = require('webpack-focus').configBuilder;
 module.exports = configBuilder();
 ```
@@ -45,7 +43,6 @@ module.exports = configBuilder();
 ### Sample usage
 
 ```js
-const webpackConfig = require('./webpack.config');
 const serverLauncher = require('webpack-focus').serverLauncher;
 serverLauncher(webpackConfig);
 ```
