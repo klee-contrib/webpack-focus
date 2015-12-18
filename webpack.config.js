@@ -9,15 +9,15 @@ const {
     DEV_SERVER_HOST = 'localhost',
     DEV_SERVER_PORT = 3000,
     ENTRY_FILE_PATH = './src',
-    OUTPUT_FILE_NAME = 'your-project-name',
-    PROJECT_NAME = 'your-project',
+    npm_package_name = 'your-project',
     OUTPUT_DIR = './dist',
     PAGE_TITLE = 'You project landing page',
     ANCHOR_CLASS = 'your-project',
     PUBLIC_PATH = '/',
     GENERATE_HTML = true,
-    BASE_DIR = __dirname,
-    BABELIFIED_PATH = './src'
+    BABELIFIED_PATH = './src',
+    MINIMIFY = false,
+    LIBRARY_NAME = 'YourProject'
 } = process.env;
 
 /*************************************
@@ -31,11 +31,11 @@ const defaultConfig = {
         'webpack/hot/only-dev-server'
     ] : []),
     output: {
-        path: path.resolve(BASE_DIR, OUTPUT_DIR),
-        filename: `${OUTPUT_FILE_NAME}.js`,
+        path: path.resolve(process.cwd(), OUTPUT_DIR),
+        filename: `${npm_package_name}.js`,
         publicPath: PUBLIC_PATH,
         libraryTarget: 'umd',
-        library: PROJECT_NAME
+        library: LIBRARY_NAME
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -44,22 +44,27 @@ const defaultConfig = {
         })
     ].concat(DEV ? [
         new webpack.HotModuleReplacementPlugin()
-    ] : [
-        
-    ]).concat(GENERATE_HTML ? [
+    ] : []).concat(GENERATE_HTML ? [
         new HtmlWebpackPlugin({
             inject: 'body',
             templateContent: `<html><head><title>${PAGE_TITLE}</title></head><body><div class="${ANCHOR_CLASS}"/></body></html>`
         })
+    ] : []).concat(MINIMIFY ? [
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            compressor: {
+                'screw_ie8': true,
+                warnings: false
+            }
+        })
     ] : []),
-    progress: true,
     module: {
         loaders: [
             {
-                test: /.js?$/,
+                test: /.jsx?$/,
                 loader: DEV ? 'react-hot!babel' : 'babel',
                 include: [
-                    path.resolve(BASE_DIR, BABELIFIED_PATH)
+                    path.resolve(process.cwd(), BABELIFIED_PATH)
                 ]
             },
             {
@@ -113,4 +118,4 @@ const defaultConfig = {
     }
 }
 
-export const configBuilder = (customConf = {}) => defaultsDeep(defaultConfig, customConf);
+export const configBuilder = (customConf = {}) => defaultsDeep(customConf, defaultConfig);

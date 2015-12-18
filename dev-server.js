@@ -9,8 +9,7 @@ const {
     DEV_SERVER_PORT = 3000,
     API_HOST = 'localhost',
     API_PORT = 8080,
-    PUBLIC_PATH = '/',
-    BASE_DIR = __dirname
+    PUBLIC_PATH = '/'
 } = process.env;
 
 /*****************************************
@@ -22,7 +21,7 @@ const defaultServerConfig = {
     hot: true,
     stats: { colors: true },
     historyApiFallback: true,
-    contentBase: path.resolve(BASE_DIR, OUTPUT_DIR),
+    contentBase: path.resolve(process.cwd(), OUTPUT_DIR),
     proxy: {
         '*': 'http://' + API_HOST + ':' + API_PORT
     }
