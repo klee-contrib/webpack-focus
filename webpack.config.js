@@ -1,11 +1,12 @@
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import {defaultsDeep} from 'lodash/object';
 import path from 'path';
 
 // Environment settings
-const {
-    DEV = true,
+let {
+    DEV = 'true',
     DEV_SERVER_HOST = 'localhost',
     DEV_SERVER_PORT = 3000,
     ENTRY_FILE_PATH = './src',
@@ -14,18 +15,26 @@ const {
     PAGE_TITLE = 'You project landing page',
     ANCHOR_CLASS = 'your-project',
     PUBLIC_PATH = '/',
-    GENERATE_HTML = true,
+    GENERATE_HTML = 'true',
     BABELIFIED_PATH = './src',
-    MINIMIFY = false,
-    LIBRARY_NAME = 'YourProject'
+    MINIMIFY = 'false',
+    LIBRARY_NAME = 'YourProject',
+    SOURCE_MAPS = 'true',
+    DEBUG = 'true'
 } = process.env;
+// Parse json settings
+DEV = JSON.parse(DEV);
+GENERATE_HTML = JSON.parse(GENERATE_HTML);
+MINIMIFY = JSON.parse(MINIMIFY);
+SOURCE_MAPS = JSON.parse(SOURCE_MAPS);
+DEBUG = JSON.parse(DEBUG);
 
 /*************************************
 ********* Webpack config *************
 **************************************/
 const defaultConfig = {
     entry: [
-        ENTRY_FILE_PATH
+        path.resolve(process.cwd(), ENTRY_FILE_PATH)
     ].concat(DEV ? [
         `webpack-dev-server/client?http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}`,
         'webpack/hot/only-dev-server'
@@ -33,15 +42,21 @@ const defaultConfig = {
     output: {
         path: path.resolve(process.cwd(), OUTPUT_DIR),
         filename: `${npm_package_name}.js`,
-        publicPath: PUBLIC_PATH,
         libraryTarget: 'umd',
         library: LIBRARY_NAME
+    },
+    devtool: SOURCE_MAPS ? 'source-map' : false,
+    debug: DEBUG,
+    stats: {
+        colors: true,
+        reasons: true
     },
     plugins: [
         new webpack.DefinePlugin({
             __DEV__: DEV ? 'true' : 'false',
             __ANCHOR_CLASS__: DEV ? JSON.stringify(ANCHOR_CLASS) : null
-        })
+        }),
+        new ExtractTextPlugin(`${npm_package_name}.css`)
     ].concat(DEV ? [
         new webpack.HotModuleReplacementPlugin()
     ] : []).concat(GENERATE_HTML ? [
@@ -73,11 +88,11 @@ const defaultConfig = {
             },
             {
                 test: /\.scss$/,
-                loader: 'style!css!sass'
+                loader: ExtractTextPlugin.extract('style', 'css!sass')
             },
             {
                 test: /\.css$/,
-                loader: 'style!css'
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
             },
             {
                 test: /\.png$/,
