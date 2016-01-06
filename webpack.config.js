@@ -73,6 +73,9 @@ const defaultConfig = {
             }
         })
     ] : []),
+    resolve: {
+        extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
+    },
     module: {
         loaders: [
             {
