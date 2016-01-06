@@ -77,6 +77,12 @@ const defaultConfig = {
         extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
     },
     module: {
+        preLoaders: [
+            {
+                test: /\.js$/,
+                loader: 'source-map-loader'
+            }
+        ],
         loaders: [
             {
                 test: /.jsx?$/,
