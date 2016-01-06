@@ -1,11 +1,11 @@
 {
   "name": "webpack-focus",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Focus webpack config",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel *.js --out-dir lib",
-    "postinstall": "npm run build"
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
