@@ -33,7 +33,7 @@ DEBUG = JSON.parse(DEBUG);
 /*************************************
 ********* Webpack config *************
 **************************************/
-const defaultConfig = {
+const defaultConfig = definedVariables => ({
     entry: [
         path.resolve(process.cwd(), ENTRY_FILE_PATH)
     ].concat(DEV ? [
@@ -56,7 +56,8 @@ const defaultConfig = {
         new webpack.DefinePlugin({
             __DEV__: DEV ? 'true' : 'false',
             __ANCHOR_CLASS__: DEV ? JSON.stringify(ANCHOR_CLASS) : null,
-            __PACKAGE_JSON_PATH__: JSON.stringify(PACKAGE_JSON_PATH)
+            __PACKAGE_JSON_PATH__: JSON.stringify(PACKAGE_JSON_PATH),
+            ...definedVariables
         }),
         new ExtractTextPlugin(`${npm_package_name}.css`)
     ].concat(DEV ? [
@@ -142,6 +143,6 @@ const defaultConfig = {
             }
         ]
     }
-}
+});
 
-export const configBuilder = (customConf = {}) => defaultsDeep(customConf, defaultConfig);
+export const configBuilder = (customConf = {}, definedVariables = {}) => defaultsDeep(customConf, defaultConfig(definedVariables));
