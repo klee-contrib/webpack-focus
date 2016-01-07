@@ -21,7 +21,7 @@ let {
     LIBRARY_NAME = 'YourProject',
     SOURCE_MAPS = 'true',
     DEBUG = 'true',
-    PACKAGE_JSON_PATH = '../'
+    PACKAGE_JSON_PATH = './'
 } = process.env;
 // Parse json settings
 DEV = JSON.parse(DEV);
