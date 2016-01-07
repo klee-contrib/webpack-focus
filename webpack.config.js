@@ -20,7 +20,8 @@ let {
     MINIMIFY = 'false',
     LIBRARY_NAME = 'YourProject',
     SOURCE_MAPS = 'true',
-    DEBUG = 'true'
+    DEBUG = 'true',
+    PACKAGE_JSON_PATH = '../'
 } = process.env;
 // Parse json settings
 DEV = JSON.parse(DEV);
@@ -54,7 +55,8 @@ const defaultConfig = {
     plugins: [
         new webpack.DefinePlugin({
             __DEV__: DEV ? 'true' : 'false',
-            __ANCHOR_CLASS__: DEV ? JSON.stringify(ANCHOR_CLASS) : null
+            __ANCHOR_CLASS__: DEV ? JSON.stringify(ANCHOR_CLASS) : null,
+            __PACKAGE_JSON_PATH__: JSON.stringify(PACKAGE_JSON_PATH)
         }),
         new ExtractTextPlugin(`${npm_package_name}.css`)
     ].concat(DEV ? [
