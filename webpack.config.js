@@ -2,6 +2,8 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import {defaultsDeep} from 'lodash/object';
+import autoprefixer from 'autoprefixer';
+import precss from 'precss';
 import path from 'path';
 
 // Environment settings
@@ -100,7 +102,7 @@ const defaultConfig = definedVariables => ({
             },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style', 'css!sass')
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader')
             },
             {
                 test: /\.css$/,
@@ -142,6 +144,9 @@ const defaultConfig = definedVariables => ({
                 loader: 'url?limit=10000&mimetype=image/svg+xml'
             }
         ]
+    }
+, postcss() {
+        return [autoprefixer, precss];
     }
 });
 
