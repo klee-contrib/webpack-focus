@@ -59,16 +59,16 @@ const defaultConfig = definedVariables => ({
             __PACKAGE_JSON_PATH__: JSON.stringify(PACKAGE_JSON_PATH),
             ...definedVariables
         }),
+        new webpack.optimize.DedupePlugin(),
         new ExtractTextPlugin(`${npm_package_name}.css`)
     ].concat(DEV ? [
         new webpack.HotModuleReplacementPlugin()
     ] : []).concat(GENERATE_HTML ? [
         new HtmlWebpackPlugin({
             inject: 'body',
-            templateContent: `<html><head><title>${PAGE_TITLE}</title></head><body><div class="${ANCHOR_CLASS}"/></body></html>`
+            templateContent: `<html><head><meta charset="UTF-8"><title>${PAGE_TITLE}</title></head><body><div class="${ANCHOR_CLASS}"/></body></html>`
         })
     ] : []).concat(MINIMIFY ? [
-        new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compressor: {
                 'screw_ie8': true,
