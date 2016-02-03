@@ -100,11 +100,11 @@ const defaultConfig = definedVariables => ({
             },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style', 'css!sass')
+                loader: ExtractTextPlugin.extract('style', 'css!autoprefixer-loader!sass')
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+                loader: ExtractTextPlugin.extract('style-loader', 'autoprefixer-loader', 'css-loader')
             },
             {
                 test: /\.png$/,
