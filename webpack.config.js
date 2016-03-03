@@ -107,39 +107,43 @@ const defaultConfig = definedVariables => ({
                 loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'autoprefixer-loader')
             },
             {
-                test: /\.png$/,
+                test: /\.png(\?.*)?$/$/,
                 loader: 'url-loader',
                 query: { mimetype: 'image/png' }
             },
             {
-                test: /\.jpg$/,
+                test: /\.jpg(\?.*)?$/$/,
                 loader: 'url-loader',
                 query: { mimetype: 'image/jpg' }
             },
             {
-                test: /\.gif$/,
+                test: /\.gif(\?.*)?$/$/,
                 loader: 'url-loader',
                 query: { mimetype: 'image/gif' }
             },
             {
-                test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=application/font-woff'
+                test: /\.woff(\?.*)?$/,
+                loader: 'url-loader',
+                query: {limit: 50000, mimetype: 'application/font-woff'}
             },
             {
-                test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=application/font-woff'
+                test: /\.woff2(\?.*)?$/,
+                loader: 'url-loader',
+                query: {limit: 50000, mimetype: 'application/font-woff'}
             },
             {
-                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=application/octet-stream'
+                test: /\.ttf(\?.*)?$/,
+                loader: 'url-loader',
+                query: {limit: 50000, mimetype: 'application/octet-stream'}
             },
             {
-                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.eot(\?.*)?$/,
                 loader: 'file'
             },
             {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=image/svg+xml'
+                test: /\.svg(\?.*)?$/,
+                loader: 'url-loader',
+                query: {limit: 50000, mimetype: 'image/svg+xml'}
             }
         ]
     }
