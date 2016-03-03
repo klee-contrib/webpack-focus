@@ -107,17 +107,17 @@ const defaultConfig = definedVariables => ({
                 loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'autoprefixer-loader')
             },
             {
-                test: /\.png(\?.*)?$/$/,
+                test: /\.png(\?.*)?$/,
                 loader: 'url-loader',
                 query: { mimetype: 'image/png' }
             },
             {
-                test: /\.jpg(\?.*)?$/$/,
+                test: /\.jpg(\?.*)?$/,
                 loader: 'url-loader',
                 query: { mimetype: 'image/jpg' }
             },
             {
-                test: /\.gif(\?.*)?$/$/,
+                test: /\.gif(\?.*)?$/,
                 loader: 'url-loader',
                 query: { mimetype: 'image/gif' }
             },
