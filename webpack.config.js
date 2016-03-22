@@ -3,6 +3,9 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import {defaultsDeep} from 'lodash/object';
 import path from 'path';
+import os from 'os';
+
+const USER = os.hostname();
 
 // Environment settings
 let {
@@ -57,6 +60,8 @@ const defaultConfig = definedVariables => ({
             __DEV__: DEV ? 'true' : 'false',
             __ANCHOR_CLASS__: DEV ? JSON.stringify(ANCHOR_CLASS) : null,
             __PACKAGE_JSON_PATH__: JSON.stringify(PACKAGE_JSON_PATH),
+            __USER__: JSON.stringify(USER),
+            __PROJECT__: JSON.stringify(npm_package_name),
             ...definedVariables
         }),
         new webpack.optimize.DedupePlugin(),
