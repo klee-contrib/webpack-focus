@@ -45,6 +45,7 @@ const defaultConfig = definedVariables => ({
     ] : []),
     output: {
         path: path.resolve(process.cwd(), OUTPUT_DIR),
+        publicPath: `http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}`,
         filename: `${npm_package_name}.js`,
         libraryTarget: 'umd',
         library: LIBRARY_NAME
