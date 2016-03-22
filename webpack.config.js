@@ -45,7 +45,7 @@ const defaultConfig = definedVariables => ({
     ] : []),
     output: {
         path: path.resolve(process.cwd(), OUTPUT_DIR),
-        publicPath: `http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}`,
+        publicPath: `http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}/`,
         filename: `${npm_package_name}.js`,
         libraryTarget: 'umd',
         library: LIBRARY_NAME
@@ -59,7 +59,7 @@ const defaultConfig = definedVariables => ({
     plugins: [
         new webpack.DefinePlugin({
             __DEV__: DEV ? 'true' : 'false',
-            __ANCHOR_CLASS__: DEV ? JSON.stringify(ANCHOR_CLASS) : null,
+            __ANCHOR_CLASS__: JSON.stringify(ANCHOR_CLASS),
             __PACKAGE_JSON_PATH__: JSON.stringify(PACKAGE_JSON_PATH),
             __USER__: JSON.stringify(USER),
             __PROJECT__: JSON.stringify(npm_package_name),
