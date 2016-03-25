@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
+import {defaultsDeep} from 'lodash/object';
 
 // Environment settings
 const {
@@ -19,7 +20,20 @@ const {
 const defaultServerConfig = {
     publicPath: PUBLIC_PATH,
     hot: true,
-    stats: { colors: true },
+    stats: {
+        colors: true,
+        version: false,
+        timings: false,
+        assets: false,
+        chunks: false,
+        modules: false,
+        reasons: false,
+        children: false,
+        source: false,
+        errors: true,
+        errorDetails: true,
+        warnings: true
+    },
     historyApiFallback: true,
     contentBase: path.resolve(process.cwd(), OUTPUT_DIR),
     proxy: {
@@ -27,8 +41,8 @@ const defaultServerConfig = {
     }
 };
 
-export const serverLauncher = (webpackConfig, serverConfig = defaultServerConfig) => {
-    new WebpackDevServer(webpack(webpackConfig), serverConfig).listen(DEV_SERVER_PORT, DEV_SERVER_HOST, err => {
+export const serverLauncher = (webpackConfig, serverConfig = {}) => {
+    new WebpackDevServer(webpack(webpackConfig), defaultsDeep(serverConfig, defaultServerConfig)).listen(DEV_SERVER_PORT, DEV_SERVER_HOST, err => {
         if (err) {
             console.error(err);
         }

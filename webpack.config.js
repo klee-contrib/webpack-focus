@@ -54,7 +54,17 @@ const defaultConfig = definedVariables => ({
     debug: DEBUG,
     stats: {
         colors: true,
-        reasons: true
+        version: false,
+        timings: false,
+        assets: false,
+        chunks: false,
+        modules: false,
+        reasons: false,
+        children: false,
+        source: false,
+        errors: true,
+        errorDetails: true,
+        warnings: true
     },
     plugins: [
         new webpack.DefinePlugin({
