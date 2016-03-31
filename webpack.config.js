@@ -24,7 +24,8 @@ let {
     LIBRARY_NAME = 'YourProject',
     SOURCE_MAPS = 'true',
     DEBUG = 'true',
-    PACKAGE_JSON_PATH = './'
+    PACKAGE_JSON_PATH = './',
+    OUTPUT_PUBLIC_PATH
 } = process.env;
 // Parse json settings
 DEV = JSON.parse(DEV);
@@ -32,6 +33,7 @@ GENERATE_HTML = JSON.parse(GENERATE_HTML);
 MINIMIFY = JSON.parse(MINIMIFY);
 SOURCE_MAPS = JSON.parse(SOURCE_MAPS);
 DEBUG = JSON.parse(DEBUG);
+OUTPUT_PUBLIC_PATH = OUTPUT_PUBLIC_PATH !== undefined ? OUTPUT_PUBLIC_PATH : `http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}/`;
 
 /*************************************
 ********* Webpack config *************
@@ -45,7 +47,7 @@ const defaultConfig = definedVariables => ({
     ] : []),
     output: {
         path: path.resolve(process.cwd(), OUTPUT_DIR),
-        publicPath: `http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}/`,
+        publicPath: OUTPUT_PUBLIC_PATH,
         filename: `${npm_package_name}.js`,
         libraryTarget: 'umd',
         library: LIBRARY_NAME
