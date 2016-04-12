@@ -25,7 +25,8 @@ let {
     SOURCE_MAPS = 'true',
     DEBUG = 'true',
     PACKAGE_JSON_PATH = './',
-    OUTPUT_PUBLIC_PATH
+    OUTPUT_PUBLIC_PATH,
+    BROWSERS
 } = process.env;
 // Parse json settings
 DEV = JSON.parse(DEV);
@@ -118,11 +119,11 @@ const defaultConfig = definedVariables => ({
             },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style', 'css!autoprefixer-loader!sass')
+                loader: ExtractTextPlugin.extract('style', `css!autoprefixer-loader${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}!sass`)
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'autoprefixer-loader')
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader', `autoprefixer-loader${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}`)
             },
             {
                 test: /\.png(\?.*)?$/,
