@@ -24,6 +24,7 @@ To configure this, a good option is to use [better-npm-run]( https://www.npmjs.c
 - `GENERATE_HTML` (default `true`): automatically generate the `index.html`
 - `BABELIFIED_PATH` (default `'./src'`): directory build by Babel
 - `MINIMIFY` (default `false`): minimify the sources
+- `BROWSERS` (default `null`): browsers list that should be taken into account by the autoprefixer-loader
 
 ## Webpack configuration builder
 
