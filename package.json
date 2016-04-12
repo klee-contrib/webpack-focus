@@ -1,6 +1,6 @@
 {
   "name": "webpack-focus",
-  "version": "0.11.4",
+  "version": "0.11.5",
   "description": "Focus webpack config",
   "main": "lib/index.js",
   "scripts": {
