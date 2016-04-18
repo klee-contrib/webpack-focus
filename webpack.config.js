@@ -171,7 +171,7 @@ const defaultConfig = definedVariables => ({
         ]
     },
     postcss: function () {
-      return [stripInlineComments, precss, autoprefixer];
+      return [stripInlineComments, precss, autoprefixer({ browsers: ['last 2 versions']})];
     }
 });
 
