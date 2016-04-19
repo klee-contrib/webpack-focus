@@ -5,6 +5,10 @@ import {defaultsDeep} from 'lodash/object';
 import path from 'path';
 import os from 'os';
 
+import precss  from 'precss';
+import autoprefixer from 'autoprefixer';
+import stripInlineComments from 'postcss-strip-inline-comments';
+
 const USER = os.hostname();
 
 // Environment settings
@@ -119,11 +123,11 @@ const defaultConfig = definedVariables => ({
             },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style', `css!autoprefixer-loader${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}!sass`)
+                loader: ExtractTextPlugin.extract('css!postcss-loader?parser=postcss-scss')
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader', `autoprefixer-loader${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}`)
+                loader: ExtractTextPlugin.extract('css!postcss-loader')
             },
             {
                 test: /\.png(\?.*)?$/,
@@ -165,6 +169,9 @@ const defaultConfig = definedVariables => ({
                 query: {limit: 50000, mimetype: 'image/svg+xml'}
             }
         ]
+    },
+    postcss: function () {
+      return [stripInlineComments, precss, autoprefixer({ browsers: ['last 2 versions']})];
     }
 });
 
