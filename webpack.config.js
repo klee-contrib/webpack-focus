@@ -9,24 +9,24 @@ const USER = os.hostname();
 
 // Environment settings
 let {
-    DEV = 'true',
-    DEV_SERVER_HOST = 'localhost',
-    DEV_SERVER_PORT = 3000,
-    ENTRY_FILE_PATH = './src',
-    npm_package_name = 'your-project',
-    OUTPUT_DIR = './dist',
-    PAGE_TITLE = 'You project landing page',
-    ANCHOR_CLASS = 'your-project',
-    PUBLIC_PATH = '/',
-    GENERATE_HTML = 'true',
-    BABELIFIED_PATH = './src',
-    MINIMIFY = 'false',
-    LIBRARY_NAME = 'YourProject',
-    SOURCE_MAPS = 'true',
-    DEBUG = 'true',
-    PACKAGE_JSON_PATH = './',
-    OUTPUT_PUBLIC_PATH,
-    BROWSERS
+    DEV = 'true',                               // Toggles the hot reloading
+    DEV_SERVER_HOST = 'localhost',              // Dev server hostname
+    DEV_SERVER_PORT = 3000,                     // Dev server port
+    ENTRY_FILE_PATH = './src',                  // Entry file to build the application
+    npm_package_name = 'your-project',          // Project name, automatically set by npm
+    OUTPUT_DIR = './dist',                      // Output directory
+    PAGE_TITLE = 'You project landing page',    // Generated HTML page title
+    ANCHOR_CLASS = 'your-project',              // Generated HTML div's class
+    PUBLIC_PATH = '/',                          // Output public path
+    GENERATE_HTML = 'true',                     // Toggle index.html auto generation
+    BABELIFIED_PATH = './src',                  // Directory that will be babelified
+    MINIMIFY = 'false',                         // Toggles sources minification
+    LIBRARY_NAME = 'YourProject',               // Name of the bundled project, when set on the window (for brunch projects)
+    SOURCE_MAPS = 'true',                       // Toggles source maps generation
+    DEBUG = 'true',                             // Toggles webpack debug
+    PACKAGE_JSON_PATH = './',                   // package.json path inside of focus packages, as seen from their root file
+    OUTPUT_PUBLIC_PATH,                         // Output directory, as seen from the index.html
+    BROWSERS                                    // Browsers that should be taken into account by the autoprefixer-loader
 } = process.env;
 // Parse json settings
 DEV = JSON.parse(DEV);
@@ -42,20 +42,20 @@ OUTPUT_PUBLIC_PATH = OUTPUT_PUBLIC_PATH !== undefined ? OUTPUT_PUBLIC_PATH : `ht
 const defaultConfig = definedVariables => ({
     entry: [
         path.resolve(process.cwd(), ENTRY_FILE_PATH)
-    ].concat(DEV ? [
+    ].concat(DEV ? [                                                                    // In dev mode, add hot reloading
         `webpack-dev-server/client?http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}`,
         'webpack/hot/only-dev-server'
     ] : []),
     output: {
         path: path.resolve(process.cwd(), OUTPUT_DIR),
         publicPath: OUTPUT_PUBLIC_PATH,
-        filename: `${npm_package_name}.js`,
+        filename: `${npm_package_name}.js`,                                             // Generated file will hold the package name
         libraryTarget: 'umd',
         library: LIBRARY_NAME
     },
     devtool: SOURCE_MAPS ? 'source-map' : false,
     debug: DEBUG,
-    stats: {
+    stats: {                                                                            // Sets webpack to quieter setting, to leave a clean console on build
         colors: true,
         version: false,
         timings: false,
@@ -70,16 +70,16 @@ const defaultConfig = definedVariables => ({
         warnings: true
     },
     plugins: [
-        new webpack.DefinePlugin({
+        new webpack.DefinePlugin({                                                      // Define several global variables to be used in the project
             __DEV__: DEV ? 'true' : 'false',
             __ANCHOR_CLASS__: JSON.stringify(ANCHOR_CLASS),
             __PACKAGE_JSON_PATH__: JSON.stringify(PACKAGE_JSON_PATH),
             __USER__: JSON.stringify(USER),
             __PROJECT__: JSON.stringify(npm_package_name),
-            ...definedVariables
+            ...definedVariables                                                         // Add user defined variables
         }),
         new webpack.optimize.DedupePlugin(),
-        new ExtractTextPlugin(`${npm_package_name}.css`)
+        new ExtractTextPlugin(`${npm_package_name}.css`)                                // Generated a CSS file
     ].concat(DEV ? [
         new webpack.HotModuleReplacementPlugin()
     ] : []).concat(GENERATE_HTML ? [

@@ -5,12 +5,12 @@ import {defaultsDeep} from 'lodash/object';
 
 // Environment settings
 const {
-    OUTPUT_DIR = './dist',
-    DEV_SERVER_HOST = 'localhost',
-    DEV_SERVER_PORT = 3000,
-    API_HOST = 'localhost',
-    API_PORT = 8080,
-    PUBLIC_PATH = '/'
+    OUTPUT_DIR = './dist',              // Output directory
+    DEV_SERVER_HOST = 'localhost',      // Dev server hostname
+    DEV_SERVER_PORT = 3000,             // Dev server port
+    API_HOST = 'localhost',             // API hostname
+    API_PORT = 8080,                    // API port
+    PUBLIC_PATH = '/'                   // Output public path
 } = process.env;
 
 /*****************************************
@@ -36,7 +36,7 @@ const defaultServerConfig = {
     },
     historyApiFallback: true,
     contentBase: path.resolve(process.cwd(), OUTPUT_DIR),
-    proxy: {
+    proxy: {                                                    // By default, proxy all request different from built files, to the API
         '*': 'http://' + API_HOST + ':' + API_PORT
     }
 };
