@@ -11,7 +11,6 @@ import stripInlineComments from 'postcss-strip-inline-comments';
 import simpleVars from 'postcss-simple-vars';
 import sassyMixins from 'postcss-sassy-mixins';
 import postcssImport from 'postcss-import';
-import sassyImport from 'postcss-sassy-import';
 
 const USER = os.hostname();
 let externalVariables = {};
