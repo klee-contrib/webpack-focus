@@ -8,8 +8,13 @@ import os from 'os';
 import precss  from 'precss';
 import autoprefixer from 'autoprefixer';
 import stripInlineComments from 'postcss-strip-inline-comments';
+import simpleVars from 'postcss-simple-vars';
+import sassyMixins from 'postcss-sassy-mixins';
+import postcssImport from 'postcss-import';
+import sassyImport from 'postcss-sassy-import';
 
 const USER = os.hostname();
+let externalVariables = {};
 
 // Environment settings
 let {
@@ -30,7 +35,8 @@ let {
     DEBUG = 'true',
     PACKAGE_JSON_PATH = './',
     OUTPUT_PUBLIC_PATH,
-    BROWSERS
+    BROWSERS,
+    EXTERNAL_VARIABLES
 } = process.env;
 // Parse json settings
 DEV = JSON.parse(DEV);
@@ -39,6 +45,20 @@ MINIMIFY = JSON.parse(MINIMIFY);
 SOURCE_MAPS = JSON.parse(SOURCE_MAPS);
 DEBUG = JSON.parse(DEBUG);
 OUTPUT_PUBLIC_PATH = OUTPUT_PUBLIC_PATH !== undefined ? OUTPUT_PUBLIC_PATH : `http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}/`;
+
+if(EXTERNAL_VARIABLES) {
+  try {
+    externalVariables = require(path.resolve(process.cwd(), EXTERNAL_VARIABLES));
+  }catch(err) {
+    console.error('Can not load external variables');
+  }
+} else {
+  try {
+    externalVariables = require('focus-components/style/external_variables.js');
+  } catch(err) {
+    console.error('Can not load external variables');
+  }
+}
 
 /*************************************
 ********* Webpack config *************
@@ -171,7 +191,23 @@ const defaultConfig = definedVariables => ({
         ]
     },
     postcss: function () {
-      return [stripInlineComments, precss, autoprefixer({ browsers: ['last 2 versions']})];
+      return [
+        stripInlineComments,
+        //Plugin to handle external variable
+        simpleVars({
+          //set Externals variables.
+          variables: function () { return externalVariables;},
+            //Set silent to left unknown variables in CSS and do not throw a error.
+            silent: true
+        }),
+        postcssImport,
+        sassyMixins,
+        precss({
+          "import": {
+            "extension": "scss"
+          }
+        }),
+        autoprefixer({ browsers: ['last 2 versions']})];
     }
 });
 
