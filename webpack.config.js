@@ -12,6 +12,7 @@ import simpleVars from 'postcss-simple-vars';
 import sassyMixins from 'postcss-sassy-mixins';
 import postcssImport from 'postcss-import';
 import calc from 'postcss-calc';
+import conditionals from 'postcss-conditionals';
 
 const USER = os.hostname();
 let externalVariables = {};
@@ -202,6 +203,7 @@ const defaultConfig = definedVariables => ({
         }),
         postcssImport,
         sassyMixins,
+        conditionals,
         precss({
           "import": {
             "extension": "scss"
