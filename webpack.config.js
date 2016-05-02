@@ -204,12 +204,12 @@ const defaultConfig = definedVariables => ({
         postcssImport,
         sassyMixins,
         conditionals,
+        calc,
         precss({
           "import": {
             "extension": "scss"
           }
         }),
-        calc,
         autoprefixer({ browsers: ['last 2 versions']})];
     }
 });
