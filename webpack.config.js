@@ -11,6 +11,7 @@ import stripInlineComments from 'postcss-strip-inline-comments';
 import simpleVars from 'postcss-simple-vars';
 import sassyMixins from 'postcss-sassy-mixins';
 import postcssImport from 'postcss-import';
+import calc from 'postcss-calc';
 
 const USER = os.hostname();
 let externalVariables = {};
@@ -206,6 +207,7 @@ const defaultConfig = definedVariables => ({
             "extension": "scss"
           }
         }),
+        calc,
         autoprefixer({ browsers: ['last 2 versions']})];
     }
 });
