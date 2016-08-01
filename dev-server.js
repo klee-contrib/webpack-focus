@@ -27,7 +27,7 @@ const defaultServerConfig = {
         assets: false,
         chunks: false,
         modules: false,
-        reasons: false,
+        reasons: true,
         children: false,
         source: false,
         errors: true,

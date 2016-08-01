@@ -40,12 +40,13 @@ OUTPUT_PUBLIC_PATH = OUTPUT_PUBLIC_PATH !== undefined ? OUTPUT_PUBLIC_PATH : `ht
 ********* Webpack config *************
 **************************************/
 const defaultConfig = definedVariables => ({
-    entry: [
-        path.resolve(process.cwd(), ENTRY_FILE_PATH)
-    ].concat(DEV ? [                                                                    // In dev mode, add hot reloading
+    entry: (DEV ? [                                                                    // In dev mode, add hot reloading
+        'react-hot-loader/patch',
         `webpack-dev-server/client?http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}`,
         'webpack/hot/only-dev-server'
-    ] : []),
+    ] : []).concat([
+        path.resolve(process.cwd(), ENTRY_FILE_PATH)
+    ]),
     output: {
         path: path.resolve(process.cwd(), OUTPUT_DIR),
         publicPath: OUTPUT_PUBLIC_PATH,
@@ -53,7 +54,7 @@ const defaultConfig = definedVariables => ({
         libraryTarget: 'umd',
         library: LIBRARY_NAME
     },
-    devtool: SOURCE_MAPS ? 'source-map' : false,
+    devtool: SOURCE_MAPS ? 'eval' : false,
     debug: DEBUG,
     stats: {                                                                            // Sets webpack to quieter setting, to leave a clean console on build
         colors: true,
@@ -108,7 +109,7 @@ const defaultConfig = definedVariables => ({
         loaders: [
             {
                 test: /.jsx?$/,
-                loader: DEV ? 'react-hot!babel' : 'babel',
+                loader: /*DEV ? 'react-hot!babel' : */'babel',
                 include: [
                     path.resolve(process.cwd(), BABELIFIED_PATH)
                 ]
