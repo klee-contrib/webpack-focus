@@ -1,5 +1,5 @@
-import {configBuilder} from './webpack.config';
-import {serverLauncher} from './dev-server';
+import { configBuilder } from './webpack-config-builder';
+import { serverLauncher } from './dev-server';
 
 module.exports = {
     serverLauncher,
