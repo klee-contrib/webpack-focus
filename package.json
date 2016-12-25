@@ -3,9 +3,14 @@
   "version": "0.11.5",
   "description": "Focus webpack config",
   "main": "lib/index.js",
+  "bin": {
+    "focus-dev-server": "./lib/launcher.js"
+  },
   "scripts": {
+    "builder:gen-dev": "builder-support gen-dev",
     "build": "babel *.js --out-dir lib",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "focus-dev-server": "focus-dev-server"
   },
   "repository": {
     "type": "git",
@@ -18,11 +23,28 @@
   "author": "focus@kleegroup.com",
   "license": "MIT",
   "homepage": "https://github.com/KleeGroup/webpack-focus#readme",
+  "betterScripts": {
+    "webpack-dev-server-npm-focus": {
+      "command": "./dev-server.js",
+      "env": {
+        "ANCHOR_CLASS": "demo-app",
+        "BABELIFIED_PATH": "./app",
+        "ENTRY_FILE_PATH": "./app/index",
+        "PAGE_TITLE": "Focus demonstration application",
+        "API_HOST": "localhost",
+        "API_PORT": 8080,
+        "OUTPUT_DIR": "./public",
+        "LOCAL_FOCUS": false,
+        "LEGACY_SEARCH_API": false,
+        "BASE_URL": "/"
+      }
+    }
+  },
   "dependencies": {
     "autoprefixer-loader": "^3.2.0",
-    "babel": "^6.3.13",
     "babel-cli": "^6.3.17",
     "babel-core": "^6.3.17",
+    "babel-plugin-replace-require": "0.0.4",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
@@ -40,5 +62,8 @@
     "url-loader": "^0.5.6",
     "webpack": "^1.12.2",
     "webpack-dev-server": "^1.12.0"
+  },
+  "devDependencies": {
+    "builder-support": "^0.3.2"
   }
 }

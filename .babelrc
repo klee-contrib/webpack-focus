@@ -1,3 +1,15 @@
 {
-    "presets": ["react", "es2015", "stage-0"]
+    "presets": [
+        "react",
+        "es2015",
+        "stage-0"
+    ],
+    "plugins": [
+        [
+            "replace-require",
+            {
+                "DEV_ARCHETYPE": "require('webpack-focus/require')"
+            }
+        ]
+    ]
 }

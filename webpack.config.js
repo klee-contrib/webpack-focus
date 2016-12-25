@@ -1,7 +1,7 @@
-import webpack from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import {defaultsDeep} from 'lodash/object';
+import webpack from 'DEV_ARCHETYPE/webpack';
+import HtmlWebpackPlugin from 'DEV_ARCHETYPE/html-webpack-plugin';
+import ExtractTextPlugin from 'DEV_ARCHETYPE/extract-text-webpack-plugin';
+import { defaultsDeep } from 'DEV_ARCHETYPE/lodash/object';
 import path from 'path';
 import os from 'os';
 
@@ -102,67 +102,77 @@ const defaultConfig = definedVariables => ({
         preLoaders: [
             {
                 test: /\.js$/,
-                loader: 'source-map-loader'
+                loader: require.resolve('source-map-loader')
             }
         ],
         loaders: [
             {
                 test: /.jsx?$/,
-                loader: DEV ? 'react-hot!babel' : 'babel',
+                loader: DEV ? require.resolve('react-hot-loader/webpack') + '!' + require.resolve('babel') : require.resolve('babel'),
                 include: [
                     path.resolve(process.cwd(), BABELIFIED_PATH)
                 ]
             },
             {
+                test: /\.jsx?$/,
+                loader: require.resolve('webpack-alternate-require-loader'),
+                include: [
+                    path.resolve(process.cwd(), BABELIFIED_PATH)
+                ],
+                query: JSON.stringify({
+                    "webpack-focus/require": require.resolve("webpack-focus/require")
+                })
+            },
+            {
                 test: /\.json$/,
-                loaders: ['json']
+                loaders: [require.resolve('json')]
             },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style', `css!autoprefixer-loader${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}!sass`)
+                loader: ExtractTextPlugin.extract(require.resolve('style'), require.resolve('css') + '!' + require.resolve('autoprefixer-loader') + `${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}` + '!' + require.resolve('sass'))
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader', `autoprefixer-loader${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}`)
+                loader: ExtractTextPlugin.extract(require.resolve('style-loader'), require.resolve('css-loader'), require.resolve('autoprefixer-loader') + `${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}`)
             },
             {
                 test: /\.png(\?.*)?$/,
-                loader: 'url-loader',
+                loader: require.resolve('url-loader'),
                 query: { mimetype: 'image/png' }
             },
             {
                 test: /\.jpg(\?.*)?$/,
-                loader: 'url-loader',
+                loader: require.resolve('url-loader'),
                 query: { mimetype: 'image/jpg' }
             },
             {
                 test: /\.gif(\?.*)?$/,
-                loader: 'url-loader',
+                loader: require.resolve('url-loader'),
                 query: { mimetype: 'image/gif' }
             },
             {
                 test: /\.woff(\?.*)?$/,
-                loader: 'url-loader',
-                query: {limit: 50000, mimetype: 'application/font-woff'}
+                loader: require.resolve('url-loader'),
+                query: { limit: 50000, mimetype: 'application/font-woff' }
             },
             {
                 test: /\.woff2(\?.*)?$/,
-                loader: 'url-loader',
-                query: {limit: 50000, mimetype: 'application/font-woff'}
+                loader: require.resolve('url-loader'),
+                query: { limit: 50000, mimetype: 'application/font-woff' }
             },
             {
                 test: /\.ttf(\?.*)?$/,
-                loader: 'url-loader',
-                query: {limit: 50000, mimetype: 'application/octet-stream'}
+                loader: require.resolve('url-loader'),
+                query: { limit: 50000, mimetype: 'application/octet-stream' }
             },
             {
                 test: /\.eot(\?.*)?$/,
-                loader: 'file'
+                loader: require.resolve('file')
             },
             {
                 test: /\.svg(\?.*)?$/,
-                loader: 'url-loader',
-                query: {limit: 50000, mimetype: 'image/svg+xml'}
+                loader: require.resolve('url-loader'),
+                query: { limit: 50000, mimetype: 'image/svg+xml' }
             }
         ]
     }
