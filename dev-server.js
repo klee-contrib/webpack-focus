@@ -1,7 +1,7 @@
 import path from 'path';
-import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
-import { defaultsDeep } from 'lodash/object';
+import webpack from 'DEV_ARCHETYPE/webpack';
+import WebpackDevServer from 'DEV_ARCHETYPE/webpack-dev-server';
+import { defaultsDeep } from 'DEV_ARCHETYPE/lodash';
 
 // Environment settings
 const {

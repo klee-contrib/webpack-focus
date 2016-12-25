@@ -1,7 +1,7 @@
 import webpack from 'DEV_ARCHETYPE/webpack';
 import HtmlWebpackPlugin from 'DEV_ARCHETYPE/html-webpack-plugin';
 import ExtractTextPlugin from 'DEV_ARCHETYPE/extract-text-webpack-plugin';
-import { defaultsDeep } from 'DEV_ARCHETYPE/lodash/object';
+import { defaultsDeep } from 'DEV_ARCHETYPE/lodash';
 import path from 'path';
 import os from 'os';
 
@@ -107,14 +107,7 @@ const defaultConfig = definedVariables => ({
         ],
         loaders: [
             {
-                test: /.jsx?$/,
-                loader: DEV ? require.resolve('react-hot-loader/webpack') + '!' + require.resolve('babel') : require.resolve('babel'),
-                include: [
-                    path.resolve(process.cwd(), BABELIFIED_PATH)
-                ]
-            },
-            {
-                test: /\.jsx?$/,
+                test: /\.(js|jsx)$/,
                 loader: require.resolve('webpack-alternate-require-loader'),
                 include: [
                     path.resolve(process.cwd(), BABELIFIED_PATH)
@@ -124,12 +117,31 @@ const defaultConfig = definedVariables => ({
                 })
             },
             {
+                test: /\.(js|jsx)$/,
+                loader: require.resolve('babel-loader'),
+                include: [
+                    path.resolve(process.cwd(), BABELIFIED_PATH)
+                ],
+                query: {
+                    presets: [require.resolve('babel-preset-focus')],
+                    "plugins": [
+                        [
+                            "replace-require",
+                            {
+                                "DEV_ARCHETYPE": "require('webpack-focus/require')"
+                            }
+                        ]
+                    ]
+                }
+            },
+
+            {
                 test: /\.json$/,
-                loaders: [require.resolve('json')]
+                loaders: [require.resolve('json-loader')]
             },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract(require.resolve('style'), require.resolve('css') + '!' + require.resolve('autoprefixer-loader') + `${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}` + '!' + require.resolve('sass'))
+                loader: ExtractTextPlugin.extract(require.resolve('style-loader'), require.resolve('css-loader') + '!' + require.resolve('autoprefixer-loader') + `${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}` + '!' + require.resolve('sass-loader'))
             },
             {
                 test: /\.css$/,
@@ -167,7 +179,7 @@ const defaultConfig = definedVariables => ({
             },
             {
                 test: /\.eot(\?.*)?$/,
-                loader: require.resolve('file')
+                loader: require.resolve('file-loader')
             },
             {
                 test: /\.svg(\?.*)?$/,
