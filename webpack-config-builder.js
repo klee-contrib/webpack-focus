@@ -35,7 +35,10 @@ MINIMIFY = JSON.parse(MINIMIFY);
 SOURCE_MAPS = JSON.parse(SOURCE_MAPS);
 DEBUG = JSON.parse(DEBUG);
 OUTPUT_PUBLIC_PATH = OUTPUT_PUBLIC_PATH !== undefined ? OUTPUT_PUBLIC_PATH : `http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}/`;
-
+BABELIFIED_PATH = [].concat(BABELIFIED_PATH);
+const babelifiedIncludes = BABELIFIED_PATH.map((relativePath) => {
+    return path.resolve(process.cwd(), relativePath);
+});
 /*************************************
 ********* Webpack config *************
 **************************************/
@@ -118,9 +121,7 @@ const defaultConfig = definedVariables => ({
             {
                 test: /\.(js|jsx)$/,
                 loader: require.resolve('webpack-alternate-require-loader'),
-                include: [
-                    path.resolve(process.cwd(), BABELIFIED_PATH)
-                ],
+                include: babelifiedIncludes,
                 query: JSON.stringify({
                     'webpack-focus/require': require.resolve('webpack-focus/require')
                 })
@@ -128,9 +129,7 @@ const defaultConfig = definedVariables => ({
             {
                 test: /\.(js|jsx)$/,
                 loader: require.resolve('babel-loader'),
-                include: [
-                    path.resolve(process.cwd(), BABELIFIED_PATH)
-                ],
+                include: babelifiedIncludes,
                 query: {
                     presets: [require.resolve('babel-preset-focus')],
                     plugins: [
