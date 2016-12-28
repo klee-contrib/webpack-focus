@@ -85,12 +85,21 @@ const defaultConfig = definedVariables => ({
     ] : []).concat(GENERATE_HTML ? [
         new HtmlWebpackPlugin({
             inject: 'body',
-            templateContent: `<html><head><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta charset="UTF-8"><title>${PAGE_TITLE}</title></head><body><div class="${ANCHOR_CLASS}"/></body></html>`
+            templateContent: `<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta charset="UTF-8">
+        <title>${PAGE_TITLE}</title>
+    </head>
+    <body>
+        <div class="${ANCHOR_CLASS}"/>
+    </body>
+</html>`
         })
     ] : []).concat(MINIMIFY ? [
         new webpack.optimize.UglifyJsPlugin({
             compressor: {
-                'screw_ie8': true,
+                screw_ie8: true,
                 warnings: false
             }
         })
@@ -113,7 +122,7 @@ const defaultConfig = definedVariables => ({
                     path.resolve(process.cwd(), BABELIFIED_PATH)
                 ],
                 query: JSON.stringify({
-                    "webpack-focus/require": require.resolve("webpack-focus/require")
+                    'webpack-focus/require': require.resolve('webpack-focus/require')
                 })
             },
             {
@@ -124,11 +133,11 @@ const defaultConfig = definedVariables => ({
                 ],
                 query: {
                     presets: [require.resolve('babel-preset-focus')],
-                    "plugins": [
+                    plugins: [
                         [
-                            "replace-require",
+                            'replace-require',
                             {
-                                "DEV_ARCHETYPE": "require('webpack-focus/require')"
+                                DEV_ARCHETYPE: "require('webpack-focus/require')"
                             }
                         ]
                     ]
@@ -141,11 +150,11 @@ const defaultConfig = definedVariables => ({
             },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract(require.resolve('style-loader'), require.resolve('css-loader') + '!' + require.resolve('autoprefixer-loader') + `${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}` + '!' + require.resolve('sass-loader'))
+                loader: ExtractTextPlugin.extract(require.resolve('style-loader'), require.resolve('css-loader') + '!' + require.resolve('postcss-loader') + `${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}` + '!' + require.resolve('sass-loader'))
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract(require.resolve('style-loader'), require.resolve('css-loader'), require.resolve('autoprefixer-loader') + `${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}`)
+                loader: ExtractTextPlugin.extract(require.resolve('style-loader'), require.resolve('css-loader'), require.resolve('postcss-loader') + `${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}`)
             },
             {
                 test: /\.png(\?.*)?$/,
