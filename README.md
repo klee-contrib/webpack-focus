@@ -22,7 +22,7 @@ To configure this, a good option is to use [better-npm-run]( https://www.npmjs.c
 - `ANCHOR_CLASS` (default `'your-project'`): class used to anchor the `ReactDOM.render`. Exposed globally through the variable `__ANCHOR_CLASS__`
 - `PUBLIC_PATH` (default `'/'`): path to the built files on the webpack dev server
 - `GENERATE_HTML` (default `true`): automatically generate the `index.html`
-- `BABELIFIED_PATH` (default `'./src'`): directory build by Babel
+- `BABELIFIED_PATH` (default `'./src'`): directory build by Babel, you can also give multiple source folders giving an array (ex: ['./foo', './src/lala']
 - `MINIMIFY` (default `false`): minimify the sources
 - `BROWSERS` (default `null`): browsers list that should be taken into account by the autoprefixer-loader
 - `SOURCE_MAPS` (default= `true`)Toggles source maps generation
