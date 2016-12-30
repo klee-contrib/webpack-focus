@@ -171,23 +171,8 @@ const defaultConfig = definedVariables => ({
                 query: { mimetype: 'image/gif' }
             },
             {
-                test: /\.woff(\?.*)?$/,
-                loader: require.resolve('url-loader'),
-                query: { limit: 50000, mimetype: 'application/font-woff' }
-            },
-            {
-                test: /\.woff2(\?.*)?$/,
-                loader: require.resolve('url-loader'),
-                query: { limit: 50000, mimetype: 'application/font-woff' }
-            },
-            {
-                test: /\.ttf(\?.*)?$/,
-                loader: require.resolve('url-loader'),
-                query: { limit: 50000, mimetype: 'application/octet-stream' }
-            },
-            {
-                test: /\.eot(\?.*)?$/,
-                loader: require.resolve('file-loader')
+                test: /\.(woff|woff2|ttf|eot|svg)(\?.*)?$/,
+                loader: require.resolve('base64-font-loader')
             },
             {
                 test: /\.svg(\?.*)?$/,

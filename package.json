@@ -33,6 +33,7 @@
     "babel-loader": "^6.2.10",
     "babel-plugin-replace-require": "0.0.4",
     "babel-preset-focus": "git://github.com/KleeGroup/babel-preset-focus.git#refreshing-updating",
+    "base64-font-loader": "0.0.4",
     "css-loader": "^0.26.1",
     "eslint-config-focus": "git://github.com/KleeGroup/eslint-config-focus.git#updating-refreshing",
     "extract-text-webpack-plugin": "^1.0.1",
