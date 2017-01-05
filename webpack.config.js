@@ -112,7 +112,7 @@ const defaultConfig = definedVariables => ({
         loaders: [
             {
                 test: /.jsx?$/,
-                loader: DEV ? 'react-hot!babel' : 'babel',
+                loader: 'babel',
                 include: babelifiedIncludes
             },
             {
