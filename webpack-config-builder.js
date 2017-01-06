@@ -172,16 +172,16 @@ const defaultConfig = definedVariables => ({
             },
             {
                 test: /\.ttf(\?.*)?$/,
-                loader: 'url-loader',
+                loader: require.resolve('url-loader'),
                 query: { limit: 50000, mimetype: 'application/octet-stream' }
             },
             {
                 test: /\.eot(\?.*)?$/,
-                loader: 'file'
+                loader: require.resolve('file-loader')
             },
             {
                 test: /\.woff2(\?.*)?$/,
-                loader: 'url-loader',
+                loader: require.resolve('url-loader'),
                 query: { limit: 50000, mimetype: 'application/font-woff' }
             },
             {
