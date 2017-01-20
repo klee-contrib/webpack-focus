@@ -26,12 +26,14 @@ let {
     DEBUG = 'true',                             // Toggles webpack debug
     PACKAGE_JSON_PATH = './',                   // package.json path inside of focus packages, as seen from their root file
     OUTPUT_PUBLIC_PATH,                         // Output directory, as seen from the index.html
-    BROWSERS                                    // Browsers that should be taken into account by the autoprefixer-loader
+    BROWSERS,                                   // Browsers that should be taken into account by the autoprefixer-loader
+    DROP_CONSOLE = 'false'                      // If console statement should be dropped when MINIMIFY
 } = process.env;
 // Parse json settings
 DEV = JSON.parse(DEV);
 GENERATE_HTML = JSON.parse(GENERATE_HTML);
 MINIMIFY = JSON.parse(MINIMIFY);
+DROP_CONSOLE = JSON.parse(DROP_CONSOLE);
 SOURCE_MAPS = JSON.parse(SOURCE_MAPS);
 DEBUG = JSON.parse(DEBUG);
 OUTPUT_PUBLIC_PATH = OUTPUT_PUBLIC_PATH !== undefined ? OUTPUT_PUBLIC_PATH : `http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}/`;
@@ -103,7 +105,10 @@ const defaultConfig = definedVariables => ({
         new webpack.optimize.UglifyJsPlugin({
             compressor: {
                 screw_ie8: true,
-                warnings: false
+                warnings: false,
+                drop_console: DROP_CONSOLE,
+                drop_debugger: true,
+                passes: 2
             }
         })
     ] : []),
