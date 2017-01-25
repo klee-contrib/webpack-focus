@@ -26,11 +26,13 @@ let {
     DEBUG = 'true',                             // Toggles webpack debug
     PACKAGE_JSON_PATH = './',                   // package.json path inside of focus packages, as seen from their root file
     OUTPUT_PUBLIC_PATH,                         // Output directory, as seen from the index.html
+    HOT_RELOAD = 'true',                        // Flag to disable hot reload, even in DEV
     BROWSERS,                                   // Browsers that should be taken into account by the autoprefixer-loader
     DROP_CONSOLE = 'false'                      // If console statement should be dropped when MINIMIFY
 } = process.env;
 // Parse json settings
 DEV = JSON.parse(DEV);
+HOT_RELOAD = JSON.parse(HOT_RELOAD);
 GENERATE_HTML = JSON.parse(GENERATE_HTML);
 MINIMIFY = JSON.parse(MINIMIFY);
 DROP_CONSOLE = JSON.parse(DROP_CONSOLE);
@@ -85,7 +87,7 @@ const defaultConfig = definedVariables => ({
         }),
         new webpack.optimize.DedupePlugin(),
         new ExtractTextPlugin(`${npm_package_name}.css`)                                // Generated a CSS file
-    ].concat(DEV ? [
+    ].concat((DEV && HOT_RELOAD) ? [
         new webpack.HotModuleReplacementPlugin()
     ] : []).concat(GENERATE_HTML ? [
         new HtmlWebpackPlugin({
