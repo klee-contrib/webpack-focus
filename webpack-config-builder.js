@@ -49,7 +49,7 @@ const babelifiedIncludes = BABELIFIED_PATH.map((relativePath) => {
 const defaultConfig = definedVariables => ({
     entry: [
         path.resolve(process.cwd(), ENTRY_FILE_PATH)
-    ].concat(DEV ? [                                                                    // In dev mode, add hot reloading
+    ].concat((DEV && HOT_RELOAD) ? [                                                    // In dev mode, add hot reloading
         `webpack-dev-server/client?http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}`,
         'webpack/hot/only-dev-server'
     ] : []),
