@@ -89,7 +89,7 @@ const defaultConfig = definedVariables => ({
     ] : []).concat(GENERATE_HTML ? [
         new HtmlWebpackPlugin({
             inject: 'body',
-            templateContent: `<html><head><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta charset="UTF-8"><title>${PAGE_TITLE}</title></head><body><div class="${ANCHOR_CLASS}"/></body></html>`
+            templateContent: `<html><head><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta charset="UTF-8" /><title>${PAGE_TITLE}</title></head><body><div class="${ANCHOR_CLASS}"></div></body></html>`
         })
     ] : []).concat(MINIMIFY ? [
         new webpack.optimize.UglifyJsPlugin({
