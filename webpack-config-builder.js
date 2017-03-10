@@ -1,7 +1,7 @@
-import webpack from 'DEV_ARCHETYPE/webpack';
-import HtmlWebpackPlugin from 'DEV_ARCHETYPE/html-webpack-plugin';
-import ExtractTextPlugin from 'DEV_ARCHETYPE/extract-text-webpack-plugin';
-import { defaultsDeep } from 'DEV_ARCHETYPE/lodash';
+import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import { defaultsDeep } from 'lodash';
 import path from 'path';
 import os from 'os';
 
@@ -127,29 +127,12 @@ const defaultConfig = definedVariables => ({
         loaders: [
             {
                 test: /\.(js|jsx)$/,
-                loader: require.resolve('webpack-alternate-require-loader'),
-                include: babelifiedIncludes,
-                query: JSON.stringify({
-                    'webpack-focus/require': require.resolve('webpack-focus/require')
-                })
-            },
-            {
-                test: /\.(js|jsx)$/,
                 loader: require.resolve('babel-loader'),
                 include: babelifiedIncludes,
                 query: {
                     presets: [require.resolve('babel-preset-focus')],
-                    plugins: [
-                        [
-                            'replace-require',
-                            {
-                                DEV_ARCHETYPE: "require('webpack-focus/require')"
-                            }
-                        ]
-                    ]
                 }
             },
-
             {
                 test: /\.json$/,
                 loaders: [require.resolve('json-loader')]
