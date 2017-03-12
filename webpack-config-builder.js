@@ -6,6 +6,8 @@ import path from 'path';
 import os from 'os';
 
 const USER = os.hostname();
+// See https://webpack.js.org/guides/migrating/
+// https://webpack.js.org/configuration/module/
 
 // Environment settings
 let {
@@ -17,17 +19,14 @@ let {
     OUTPUT_DIR = './dist',                      // Output directory
     PAGE_TITLE = 'You project landing page',    // Generated HTML page title
     ANCHOR_CLASS = 'your-project',              // Generated HTML div's class
-    PUBLIC_PATH = '/',                          // Output public path
     GENERATE_HTML = 'true',                     // Toggle index.html auto generation
     BABELIFIED_PATH = './src',                  // Directory that will be babelified
     MINIMIFY = 'false',                         // Toggles sources minification
     LIBRARY_NAME = 'YourProject',               // Name of the bundled project, when set on the window (for brunch projects)
     SOURCE_MAPS = 'true',                       // Toggles source maps generation
-    DEBUG = 'true',                             // Toggles webpack debug
     PACKAGE_JSON_PATH = './',                   // package.json path inside of focus packages, as seen from their root file
     OUTPUT_PUBLIC_PATH,                         // Output directory, as seen from the index.html
     HOT_RELOAD = 'true',                        // Flag to disable hot reload, even in DEV
-    BROWSERS,                                   // Browsers that should be taken into account by the autoprefixer-loader
     DROP_CONSOLE = 'false'                      // If console statement should be dropped when MINIMIFY
 } = process.env;
 // Parse json settings
@@ -37,7 +36,6 @@ GENERATE_HTML = JSON.parse(GENERATE_HTML);
 MINIMIFY = JSON.parse(MINIMIFY);
 DROP_CONSOLE = JSON.parse(DROP_CONSOLE);
 SOURCE_MAPS = JSON.parse(SOURCE_MAPS);
-DEBUG = JSON.parse(DEBUG);
 OUTPUT_PUBLIC_PATH = OUTPUT_PUBLIC_PATH !== undefined ? OUTPUT_PUBLIC_PATH : `http://${DEV_SERVER_HOST}:${DEV_SERVER_PORT}/`;
 BABELIFIED_PATH = BABELIFIED_PATH.split(',');
 const babelifiedIncludes = BABELIFIED_PATH.map((relativePath) => {
@@ -61,7 +59,6 @@ const defaultConfig = definedVariables => ({
         library: LIBRARY_NAME
     },
     devtool: SOURCE_MAPS ? 'source-map' : false,
-    debug: DEBUG,
     stats: {                                                                            // Sets webpack to quieter setting, to leave a clean console on build
         colors: true,
         version: false,
@@ -85,7 +82,6 @@ const defaultConfig = definedVariables => ({
             __PROJECT__: JSON.stringify(npm_package_name),
             ...definedVariables                                                         // Add user defined variables
         }),
-        new webpack.optimize.DedupePlugin(),
         new ExtractTextPlugin(`${npm_package_name}.css`)                                // Generated a CSS file
     ].concat((DEV && HOT_RELOAD) ? [
         new webpack.HotModuleReplacementPlugin()
@@ -118,70 +114,75 @@ const defaultConfig = definedVariables => ({
         extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
     },
     module: {
-        preLoaders: [
+        rules: [
             {
+                // Source map pre-loader
                 test: /\.js$/,
-                loader: require.resolve('source-map-loader')
-            }
-        ],
-        loaders: [
+                enforce: 'pre',
+                use: ['source-map-loader']
+            },
             {
                 test: /\.(js|jsx)$/,
-                loader: require.resolve('babel-loader'),
+                use: ['babel-loader'],
                 include: babelifiedIncludes,
-                query: {
-                    presets: [require.resolve('babel-preset-focus')],
+                options: {
+                    presets: ['babel-preset-focus']
                 }
             },
             {
-                test: /\.json$/,
-                loaders: [require.resolve('json-loader')]
-            },
-            {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract(require.resolve('style-loader'), require.resolve('css-loader') + '!' + require.resolve('postcss-loader') + `${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}` + '!' + require.resolve('sass-loader'))
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        'css-loader?importLoaders=1',
+                        'postcss-loader', // Options should go into postcss.config.js
+                        'sass-loader'
+                    ]
+                })
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract(require.resolve('style-loader'), require.resolve('css-loader'), require.resolve('postcss-loader') + `${BROWSERS ? '?{browsers:' + JSON.stringify(BROWSERS.split(',')) + '}' : ''}`)
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        'css-loader?importLoaders=1',
+                        'postcss-loader' // Options should go into postcss.config.js
+                    ]
+                })
             },
             {
                 test: /\.png(\?.*)?$/,
-                loader: require.resolve('url-loader'),
-                query: { mimetype: 'image/png' }
+                rule: ['url-loader'],
+                options: { mimetype: 'image/png' }
             },
             {
-                test: /\.jpg(\?.*)?$/,
-                loader: require.resolve('url-loader'),
-                query: { mimetype: 'image/jpg' }
+                test: /\.(jpg|jpeg)(\?.*)?$/,
+                rule: 'url-loader',
+                options: { mimetype: 'image/jpg' }
             },
             {
                 test: /\.gif(\?.*)?$/,
-                loader: require.resolve('url-loader'),
-                query: { mimetype: 'image/gif' }
+                rule: 'url-loader',
+                options: { mimetype: 'image/gif' }
             },
             {
                 test: /\.ttf(\?.*)?$/,
-                loader: require.resolve('url-loader'),
-                query: { limit: 50000, mimetype: 'application/octet-stream' }
+                rule: 'url-loader',
+                options: { limit: 50000, mimetype: 'application/octet-stream' }
             },
             {
                 test: /\.eot(\?.*)?$/,
-                loader: require.resolve('file-loader')
+                rule: 'file-loader'
             },
             {
-                test: /\.woff2(\?.*)?$/,
-                loader: require.resolve('url-loader'),
-                query: { limit: 50000, mimetype: 'application/font-woff' }
-            },
-            {
-                test: /\.woff(\?.*)?$/,
-                loader: require.resolve('base64-font-loader')
+                test: /\.(woff2|woff)(\?.*)?$/,
+                rule: 'url-loader',
+                options: { limit: 50000, mimetype: 'application/font-woff' }
             },
             {
                 test: /\.svg(\?.*)?$/,
-                loader: require.resolve('url-loader'),
-                query: { limit: 50000, mimetype: 'image/svg+xml' }
+                rule: 'url-loader',
+                options: { limit: 50000, mimetype: 'image/svg+xml' }
             }
         ]
     }

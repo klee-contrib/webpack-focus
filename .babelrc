@@ -1,13 +1,5 @@
 {
     "presets": [
         "focus"
-    ],
-    "plugins": [
-        [
-            "replace-require",
-            {
-                "DEV_ARCHETYPE": "require('webpack-focus/require')"
-            }
-        ]
     ]
 }

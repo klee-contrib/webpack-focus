@@ -9,7 +9,6 @@
   "scripts": {
     "builder:gen-dev": "builder-support gen-dev",
     "build": "babel *.js --out-dir lib",
-    "prepublish": "npm run build",
     "focus-dev-server": "focus-dev-server",
     "focus-webpack-bundle": "webpack --color --progress",
     "focus-webpack-watch": "webpack --color --progress --watch",
@@ -28,8 +27,8 @@
   "homepage": "https://github.com/KleeGroup/webpack-focus#readme",
   "dependencies": {
     "autoprefixer": "6.7.6",
+    "babel-cli": "6.23.0",
     "babel-preset-focus": "git://github.com/KleeGroup/babel-preset-focus.git#refreshing-updating",
-    "base64-font-loader": "0.0.4",
     "css-loader": "0.27.1",
     "eslint-config-focus": "git://github.com/KleeGroup/eslint-config-focus.git#updating-refreshing",
     "extract-text-webpack-plugin": "2.1.0",
@@ -44,7 +43,7 @@
     "source-map-loader": "0.2.0",
     "style-loader": "0.13.2",
     "url-loader": "0.5.8",
-    "webpack": "1.14.0",
-    "webpack-dev-server": "1.16.3"
+    "webpack": "2.2.1",
+    "webpack-dev-server": "2.4.1"
   }
 }
