@@ -41,7 +41,7 @@ const defaultServerConfig = {
     historyApiFallback: true,
     contentBase: path.resolve(process.cwd(), OUTPUT_DIR),
     proxy: {                                                    // By default, proxy all request different from built files, to the API
-        '*': API_ROOT
+        '**': API_ROOT
     }
 };
 

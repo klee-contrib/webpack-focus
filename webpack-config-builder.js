@@ -111,7 +111,7 @@ const defaultConfig = definedVariables => ({
         })
     ] : []),
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
+        extensions: ['.js', '.jsx', '.json', '.css', '.scss']
     },
     module: {
         rules: [
@@ -119,11 +119,11 @@ const defaultConfig = definedVariables => ({
                 // Source map pre-loader
                 test: /\.js$/,
                 enforce: 'pre',
-                use: ['source-map-loader']
+                loader: 'source-map-loader'
             },
             {
                 test: /\.(js|jsx)$/,
-                use: ['babel-loader'],
+                loader: 'babel-loader',
                 include: babelifiedIncludes,
                 options: {
                     presets: ['babel-preset-focus']
@@ -152,36 +152,36 @@ const defaultConfig = definedVariables => ({
             },
             {
                 test: /\.png(\?.*)?$/,
-                rule: ['url-loader'],
+                loader: 'url-loader',
                 options: { mimetype: 'image/png' }
             },
             {
                 test: /\.(jpg|jpeg)(\?.*)?$/,
-                rule: 'url-loader',
+                loader: 'url-loader',
                 options: { mimetype: 'image/jpg' }
             },
             {
                 test: /\.gif(\?.*)?$/,
-                rule: 'url-loader',
+                loader: 'url-loader',
                 options: { mimetype: 'image/gif' }
             },
             {
                 test: /\.ttf(\?.*)?$/,
-                rule: 'url-loader',
+                loader: 'url-loader',
                 options: { limit: 50000, mimetype: 'application/octet-stream' }
             },
             {
                 test: /\.eot(\?.*)?$/,
-                rule: 'file-loader'
+                use: 'file-loader'
             },
             {
                 test: /\.(woff2|woff)(\?.*)?$/,
-                rule: 'url-loader',
+                loader: 'url-loader',
                 options: { limit: 50000, mimetype: 'application/font-woff' }
             },
             {
                 test: /\.svg(\?.*)?$/,
-                rule: 'url-loader',
+                loader: 'url-loader',
                 options: { limit: 50000, mimetype: 'image/svg+xml' }
             }
         ]
