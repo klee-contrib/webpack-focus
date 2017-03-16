@@ -1,3 +1,2 @@
 import defaultConfig from './config/default';
-
-export default defaultConfig(process.env, {});
+export default defaultConfig(process.env, {}).toWebpackConfig();
