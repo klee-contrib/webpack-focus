@@ -23,7 +23,7 @@ class ConfigBuilder {
     loaders = [];
     extensions = ['.js', '.jsx', '.json'];
     rules = [];
-    debugConfig = true;
+    debugConfig = false;
     sourceMaps = false;
     externals = {};
     definedVariables = {};
