@@ -1,5 +1,4 @@
-import { DefinePlugin, HotModuleReplacementPlugin } from 'webpack';
-import { UglifyJsPlugin } from 'webpack/optimize';
+import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import path from 'path';
@@ -46,22 +45,22 @@ const baseConfig = (environnement, definedVariables) => {
     }
     // GESTION DES PLUGINS
     // Les fonctions seront résolues au moment de la création de la config webpack.
-    config.addPlugin(10, () => new DefinePlugin(config.getDefinedVariables()));
-    config.addPlugin(20, () => new ExtractTextPlugin(config.getCssFilename()));
+    config.addPlugin(10, () => new webpack.DefinePlugin(config.getDefinedVariables()));
+    config.addPlugin(20, () => new webpack.ExtractTextPlugin(config.getCssFilename()));
     // Gestion du HOT_RELOAD
     if (parsedEnv.DEV && parsedEnv.HOT_RELOAD) {
-        config.addPlugin(30, new HotModuleReplacementPlugin());
+        config.addPlugin(30, new webpack.HotModuleReplacementPlugin());
     }
     // Génération d'un index HTML
     if (parsedEnv.GENERATE_HTML) {
-        config.addPlugin(40, env => new HtmlWebpackPlugin({
+        config.addPlugin(40, env => new webpack.HtmlWebpackPlugin({
             inject: 'body',
             templateContent: env.HTML_TEMPLATE
         }));
     }
     // Gestion de la minification
     if (parsedEnv.MINIMIFY) {
-        config.addPlugin(50, env => new UglifyJsPlugin({
+        config.addPlugin(50, env => new webpack.optimize.UglifyJsPlugin({
             compressor: {
                 screw_ie8: true,
                 warnings: false,
