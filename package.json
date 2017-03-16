@@ -8,14 +8,7 @@
     },
     "scripts": {
         "prepublish": "npm run build",
-        "build": "babel src/ --out-dir .",
-        "babel1": "babel webpack-utilities/*.js --out-dir lib/webpack-utilities/",
-        "babel2": "babel webpack-utilities/*.js --out-dir lib/webpack-utilities/",
-        "babel3": "babel webpack-utilities/*.js --out-dir lib/webpack-utilities/",
-        "focus-dev-server": "focus-dev-server",
-        "focus-webpack-bundle": "webpack --color --progress",
-        "focus-webpack-watch": "webpack --color --progress --watch",
-        "focus-webpack-profile": "webpack --progress --json --profile > profile.json"
+        "build": "babel src/ --out-dir ."
     },
     "repository": {
         "type": "git",
