@@ -2,9 +2,9 @@
     "name": "webpack-focus",
     "version": "0.11.6",
     "description": "Focus webpack config",
-    "main": "lib/index.js",
+    "main": "./index.js",
     "bin": {
-        "focus-dev-server": "./lib/launcher.js"
+        "focus-dev-server": "./launcher.js"
     },
     "scripts": {
         "prepublish": "npm run build",
