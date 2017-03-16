@@ -46,14 +46,14 @@ const baseConfig = (environnement, definedVariables) => {
     // GESTION DES PLUGINS
     // Les fonctions seront résolues au moment de la création de la config webpack.
     config.addPlugin(10, () => new webpack.DefinePlugin(config.getDefinedVariables()));
-    config.addPlugin(20, () => new webpack.ExtractTextPlugin(config.getCssFilename()));
+    config.addPlugin(20, () => new ExtractTextPlugin(config.getCssFilename()));
     // Gestion du HOT_RELOAD
     if (parsedEnv.DEV && parsedEnv.HOT_RELOAD) {
         config.addPlugin(30, new webpack.HotModuleReplacementPlugin());
     }
     // Génération d'un index HTML
     if (parsedEnv.GENERATE_HTML) {
-        config.addPlugin(40, env => new webpack.HtmlWebpackPlugin({
+        config.addPlugin(40, env => new HtmlWebpackPlugin({
             inject: 'body',
             templateContent: env.HTML_TEMPLATE
         }));
