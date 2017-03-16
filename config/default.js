@@ -36,6 +36,8 @@ var defaultConfig = function defaultConfig(environnement, definedVariables) {
 
     config.addDefinedVariable('__API_ROOT__', JSON.stringify(environnement.API_ROOT ? environnement.API_ROOT : API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/' + API_SUBDOMAIN));
     config.addDefinedVariable('__BASE_URL__', JSON.stringify(BASE_URL));
+
+    return config;
 };
 
 exports.default = defaultConfig;
