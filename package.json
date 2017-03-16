@@ -8,7 +8,7 @@
     },
     "scripts": {
         "prepublish": "npm run build",
-        "build": "babel *.js --out-dir lib && babel webpack-utilities/*.js --out-dir lib/ && babel config/*.js --out-dir lib/",
+        "build": "babel src/ --out-dir .",
         "babel1": "babel webpack-utilities/*.js --out-dir lib/webpack-utilities/",
         "babel2": "babel webpack-utilities/*.js --out-dir lib/webpack-utilities/",
         "babel3": "babel webpack-utilities/*.js --out-dir lib/webpack-utilities/",
