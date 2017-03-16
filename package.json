@@ -8,7 +8,10 @@
     },
     "scripts": {
         "prepublish": "npm run build",
-        "build": "babel *.js --out-dir lib",
+        "build": "babel *.js --out-dir lib && babel webpack-utilities/*.js --out-dir lib/ && babel config/*.js --out-dir lib/",
+        "babel1": "babel webpack-utilities/*.js --out-dir lib/webpack-utilities/",
+        "babel2": "babel webpack-utilities/*.js --out-dir lib/webpack-utilities/",
+        "babel3": "babel webpack-utilities/*.js --out-dir lib/webpack-utilities/",
         "focus-dev-server": "focus-dev-server",
         "focus-webpack-bundle": "webpack --color --progress",
         "focus-webpack-watch": "webpack --color --progress --watch",
@@ -27,8 +30,8 @@
     "homepage": "https://github.com/KleeGroup/webpack-focus#readme",
     "dependencies": {
         "autoprefixer": "6.7.6",
-        "babel-cli": "6.23.0",
-        "babel-preset-focus": "file:../babel-preset-focus",
+        "babel-loader": "6.4.0",
+        "babel-preset-focus": "git://github.com/KleeGroup/babel-preset-focus.git#refreshing-updating",
         "css-loader": "0.27.1",
         "eslint-config-focus": "git://github.com/KleeGroup/eslint-config-focus.git#updating-refreshing",
         "extract-text-webpack-plugin": "2.1.0",
@@ -45,5 +48,8 @@
         "url-loader": "0.5.8",
         "webpack": "2.2.1",
         "webpack-dev-server": "2.4.1"
+    },
+    "devDependencies": {
+        "babel-cli": "6.23.0"
     }
 }
