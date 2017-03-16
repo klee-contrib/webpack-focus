@@ -23,7 +23,6 @@
     "homepage": "https://github.com/KleeGroup/webpack-focus#readme",
     "dependencies": {
         "autoprefixer": "6.7.6",
-        "babel-loader": "6.4.0",
         "babel-preset-focus": "git://github.com/KleeGroup/babel-preset-focus.git#refreshing-updating",
         "css-loader": "0.27.1",
         "eslint-config-focus": "git://github.com/KleeGroup/eslint-config-focus.git#updating-refreshing",
