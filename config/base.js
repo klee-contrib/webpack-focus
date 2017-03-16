@@ -1,4 +1,5 @@
-import { DefinePlugin, HotModuleReplacementPlugin, UglifyJsPlugin } from 'webpack';
+import { DefinePlugin, HotModuleReplacementPlugin } from 'webpack';
+import { UglifyJsPlugin } from 'webpack/optimize';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import path from 'path';
