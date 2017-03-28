@@ -112,8 +112,8 @@ var ConfigBuilder = function () {
     ConfigBuilder.prototype.addAlias = function addAlias(aliasName, aliasPath) {
         var isRelative = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-        this._debugInfo('setOuputPath', [].concat(Array.prototype.slice.call(arguments)));
-        this.output.path = isRelative ? _path2.default.resolve(process.cwd(), aliasPath) : aliasPath;
+        this._debugInfo('addAlias', [].concat(Array.prototype.slice.call(arguments)));
+        this.aliases[aliasName] = isRelative ? _path2.default.resolve(process.cwd(), aliasPath) : aliasPath;
     };
 
     /**
@@ -331,7 +331,8 @@ var ConfigBuilder = function () {
             output: this.output,
             devtool: this.useSourceMaps ? 'source-map' : false,
             resolve: {
-                extensions: this.extensions
+                extensions: this.extensions,
+                alias: this.aliases
             },
             plugins: this.plugins.map(function (_ref2) {
                 var plugin = _ref2.plugin;
