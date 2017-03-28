@@ -275,7 +275,8 @@ class ConfigBuilder {
             output: this.output,
             devtool: this.useSourceMaps ? 'source-map' : false,
             resolve: {
-                extensions: this.extensions
+                extensions: this.extensions,
+                alias: this.aliases
             },
             plugins: this.plugins.map(({ plugin }) => plugin).map(item => isFunction(item) ? item(env) : item),
             module: {
