@@ -84,8 +84,8 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     addAlias(aliasName, aliasPath, isRelative = true) {
-        this._debugInfo('setOuputPath', [...arguments]);
-        this.output.path = isRelative ? path.resolve(process.cwd(), aliasPath) : aliasPath;
+        this._debugInfo('addAlias', [...arguments]);
+        this.aliases[aliasName] = isRelative ? path.resolve(process.cwd(), aliasPath) : aliasPath;
     }
 
     /**
