@@ -77,7 +77,7 @@ const baseConfig = (environnement, definedVariables) => {
         config.addComplexLoader(10, {
             test: /\.js$/,
             enforce: 'pre',
-            exclude: /node_modules\/css-loader/,
+            exclude: /node_modules\\css-loader/,
             loader: 'source-map-loader'
         });
     }
