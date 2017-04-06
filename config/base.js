@@ -84,7 +84,7 @@ var baseConfig = function baseConfig(environnement, definedVariables) {
         config.addPlugin(40, function (env) {
             return new _htmlWebpackPlugin2.default({
                 inject: 'body',
-                templateContent: env.HTML_TEMPLATE
+                templateContent: env.HTML_TEMPLATE(env)
             });
         });
     }
