@@ -109,7 +109,7 @@ var baseConfig = function baseConfig(environnement, definedVariables) {
         config.addComplexLoader(10, {
             test: /\.js$/,
             enforce: 'pre',
-            exclude: _path2.default.resolve(process.cwd(), './node_modules/css-loader'),
+            exclude: /node_modules\/css-loader/,
             loader: 'source-map-loader'
         });
     }
@@ -117,7 +117,7 @@ var baseConfig = function baseConfig(environnement, definedVariables) {
     config.addComplexLoader(20, {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
-        exclude: _path2.default.resolve(process.cwd(), './node_modules'),
+        exclude: /node_modules/,
         options: {
             presets: ['babel-preset-focus']
         }
