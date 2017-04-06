@@ -77,7 +77,7 @@ const baseConfig = (environnement, definedVariables) => {
         config.addComplexLoader(10, {
             test: /\.js$/,
             enforce: 'pre',
-            exclude: path.resolve(process.cwd(), './node_modules/css-loader'),
+            exclude: /node_modules\/css-loader/,
             loader: 'source-map-loader'
         });
     }
@@ -85,7 +85,7 @@ const baseConfig = (environnement, definedVariables) => {
     config.addComplexLoader(20, {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
-        exclude: path.resolve(process.cwd(), './node_modules'),
+        exclude: /node_modules/,
         options: {
             presets: ['babel-preset-focus']
         }
