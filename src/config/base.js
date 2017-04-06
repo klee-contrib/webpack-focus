@@ -55,7 +55,7 @@ const baseConfig = (environnement, definedVariables) => {
     if (parsedEnv.GENERATE_HTML) {
         config.addPlugin(40, env => new HtmlWebpackPlugin({
             inject: 'body',
-            templateContent: env.HTML_TEMPLATE
+            templateContent: env.HTML_TEMPLATE(env)
         }));
     }
     // Gestion de la minification
