@@ -23,9 +23,9 @@
     "homepage": "https://github.com/KleeGroup/webpack-focus#readme",
     "dependencies": {
         "autoprefixer": "6.7.6",
-        "babel-preset-focus": "git://github.com/KleeGroup/babel-preset-focus.git#refreshing-updating",
+        "babel-preset-focus": "0.7.0",
         "css-loader": "0.27.1",
-        "eslint-config-focus": "git://github.com/KleeGroup/eslint-config-focus.git#updating-refreshing",
+        "eslint-config-focus": "0.5.0",
         "extract-text-webpack-plugin": "2.1.0",
         "file-loader": "0.10.1",
         "html-webpack-plugin": "2.28.0",
