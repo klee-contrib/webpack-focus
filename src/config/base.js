@@ -28,7 +28,7 @@ const baseConfig = (environnement, definedVariables) => {
     // Ajout du fichier 
     config.setOuputPath(parsedEnv.OUTPUT_DIR, true);
     config.setAssetsPublicPath(parsedEnv.OUTPUT_PUBLIC_PATH);
-    config.setFilename(parsedEnv.npm_package_name);
+    config.setFilename(parsedEnv.USE_VERSION ? parsedEnv.npm_package_name + '.' + parsedEnv.npm_package_version : parsedEnv.npm_package_name);
     config.useSourceMaps(parsedEnv.SOURCE_MAPS);
 
     // Ajout des variables injectées
