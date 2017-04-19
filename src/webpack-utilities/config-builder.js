@@ -270,10 +270,9 @@ class ConfigBuilder {
     }
 
     _buildConfig(env) {
-        return {
+        const config = {
             entry: this.entries,
             output: this.output,
-            devtool: this.useSourceMaps ? 'source-map' : false,
             resolve: {
                 extensions: this.extensions,
                 alias: this.aliases
@@ -293,11 +292,16 @@ class ConfigBuilder {
                 reasons: false,
                 children: false,
                 source: false,
-                errors: true,
+                errors: true, 
                 errorDetails: true,
                 warnings: true
             }
+        };
+        if (this.sourceMaps) {
+            config.devtool = 'source-map';
+
         }
+        return config; 
     }
 
     /**

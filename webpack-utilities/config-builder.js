@@ -326,10 +326,9 @@ var ConfigBuilder = function () {
     };
 
     ConfigBuilder.prototype._buildConfig = function _buildConfig(env) {
-        return {
+        var config = {
             entry: this.entries,
             output: this.output,
-            devtool: this.useSourceMaps ? 'source-map' : false,
             resolve: {
                 extensions: this.extensions,
                 alias: this.aliases
@@ -364,6 +363,10 @@ var ConfigBuilder = function () {
                 warnings: true
             }
         };
+        if (this.sourceMaps) {
+            config.devtool = 'source-map';
+        }
+        return config;
     };
 
     /**
