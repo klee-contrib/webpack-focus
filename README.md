@@ -12,7 +12,7 @@ To configure this, a good option is to use [better-npm-run]( https://www.npmjs.c
 - `DEV_SERVER_PORT` (default `3000`): webpack dev server port
 - `API_HOST` (default `'localhost'`): API hostname
 - `API_PORT` (default `8080`): API port
-- `ENTRY_FILE_PATH` (default `'./src'`): project entry file path, that is to say to file launching the app
+- `ENTRY_FILE_PATH` (default `'./src'`): project entry file path, that is to say the file launching the app
 - `OUTPUT_FILE_NAME` (default `'your-project-name'`): project file name
 - `OUTPUT_PUBLIC_PATH` : Path from the CSS file to the ressources folder, for resolving fonts, images, ...
 - `OUTPUT_DIR` (default `'./dir'`): output directory
