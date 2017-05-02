@@ -43,6 +43,9 @@ const defaultServerConfig = {
     // By default, proxy all request different from built files, to the API
     proxy: {
         // '**': API_ROOT
+    },
+    headers: {
+        "Access-Control-Allow-Origin": "*"
     }
 };
 
