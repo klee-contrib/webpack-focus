@@ -1,5 +1,5 @@
 import path from 'path';
-import { isArray, isString, isFunction, defaultsDeep } from 'lodash';
+import defaultsDeep from 'lodash/defaultsDeep';
 
 const entryError =
     `Le point d'entrée correspond au point d'entrée dans la SPA,
@@ -49,9 +49,9 @@ class ConfigBuilder {
      */
     addEntry(entry) {
         this._debugInfo('setOuputPath', [...arguments]);
-        if (isArray(entry)) {
+        if (Array.isArray(entry)) {
             this.entries.push(...entry);
-        } else if (isString(entry)) {
+        } else if (typeof (entry) === 'string') {
             this.entries.push(entry);
         } else {
             throw new Error(entryError);
@@ -126,9 +126,9 @@ class ConfigBuilder {
      */
     addExtension(extension) {
         this._debugInfo('addExtension', [...arguments]);
-        if (isArray(extension)) {
+        if (Array.isArray(extension)) {
             this.extensions.push(...extension);
-        } else if (isString(extension)) {
+        } else if (typeof (extension) === 'string') {
             this.extensions.push(extension);
         } else {
             throw new Error('Une extension est soit une chaine de caractère, soit tableau de chaine de caractère');
@@ -277,9 +277,9 @@ class ConfigBuilder {
                 extensions: this.extensions,
                 alias: this.aliases
             },
-            plugins: this.plugins.map(({ plugin }) => plugin).map(item => isFunction(item) ? item(env) : item),
+            plugins: this.plugins.map(({ plugin }) => plugin).map(item => typeof (item) === 'function' ? item(env) : item),
             module: {
-                rules: this.loaders.map(({ loader }) => loader).map(item => isFunction(item) ? item(env) : item)
+                rules: this.loaders.map(({ loader }) => loader).map(item => typeof (item) === 'function' ? item(env) : item)
             },
             externals: this.externals,
             stats: {
@@ -292,7 +292,7 @@ class ConfigBuilder {
                 reasons: false,
                 children: false,
                 source: false,
-                errors: true, 
+                errors: true,
                 errorDetails: true,
                 warnings: true
             }
@@ -301,7 +301,7 @@ class ConfigBuilder {
             config.devtool = 'source-map';
 
         }
-        return config; 
+        return config;
     }
 
     /**

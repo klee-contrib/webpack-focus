@@ -1,4 +1,4 @@
-import { defaultsDeep } from 'lodash';
+import defaultsDeep from 'lodash/defaultsDeep';
 
 const defaultEnv = {
     DEV: 'true',                               // Toggles the hot reloading
