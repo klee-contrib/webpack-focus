@@ -21,7 +21,11 @@ const baseConfig = (environnement, definedVariables) => {
 
     // Ajout des points d'entrée pour le hot reload
     if (parsedEnv.DEV && parsedEnv.HOT_RELOAD) {
-        config.addEntry(`webpack-dev-server/client?http://${parsedEnv.DEV_SERVER_HOST}:${parsedEnv.DEV_SERVER_PORT}`);
+        config.addEntry('react-dev-utils/webpackHotDevClient');
+        // Errors should be considered fatal in development
+        config.addEntry('react-error-overlay');
+
+        // config.addEntry(`webpack-dev-server/client?http://${parsedEnv.DEV_SERVER_HOST}:${parsedEnv.DEV_SERVER_PORT}`);
         config.addEntry('webpack/hot/only-dev-server');
     }
 
