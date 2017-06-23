@@ -48,7 +48,7 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     addEntry(entry) {
-        this._debugInfo('setOuputPath', [...arguments]);
+        this._debugInfo('addEntry', [...arguments]);
         if (Array.isArray(entry)) {
             this.entries.push(...entry);
         } else if (typeof (entry) === 'string') {
@@ -139,7 +139,18 @@ class ConfigBuilder {
         return orderedList.findIndex(({ ordre }) => ordre > newOrdre);
     }
 
+    _getElement(orderedList, eltOrdre) {
+        return orderedList.find(({ ordre }) => eltOrdre === ordre);
+    }
+
+    _getIndexElement(orderedList, eltOrdre) {
+        return orderedList.findIndex(({ ordre }) => eltOrdre === ordre);
+    }
+
     _insertElt(orderedList, newElt) {
+        if (this._getIndexElement(orderedList, newElt.ordre) !== -1) {
+            throw new Error('Un élément d\'ordre ' + newElt.ordre + ' existe déjà');
+        }
         const index = this._getInsertIndex(orderedList, newElt.ordre);
         if (index === -1) {
             // L'élément a l'ordre le plus grand
@@ -148,8 +159,18 @@ class ConfigBuilder {
             // Sinon, on injecte juste avant le plugin ayant un ordre plus élevé
             orderedList.splice(index, 0, newElt);
         }
-
     }
+
+    _removeElt(orderedList, ordre) {
+        const index = this._getIndexElement(orderedList, ordre);
+        if (index === -1) {
+            console.warn("Aucun élément d'ordre " + ordre + " n'existe, donc aucun élément n'a été retiré")
+            return null;
+        } else {
+            return orderedList.splice(index, 1)[0];
+        }
+    }
+
     /**
      * Ajoute un plugin à la configuration webpack, à la position indiquée.
      * Cf https://webpack.js.org/configuration/plugins/#plugins
@@ -164,6 +185,32 @@ class ConfigBuilder {
         this._insertElt(this.plugins, { ordre, plugin })
     }
 
+
+    /**
+     * Retire un plugin à la configuration webpack, à la position indiquée.
+     * 
+     * @param {int} ordre la position dans la liste des plugins 
+     * @returns {object} l'élément supprimé
+     * @memberof ConfigBuilder
+     *
+     */
+    removePlugin(ordre) {
+        this._debugInfo('removePlugin', [...arguments]);
+        return this._removeElt(this.plugins, ordre);
+    }
+
+    /**
+     * Accède à un plugin de la configuration webpack, à la position indiquée.
+     * 
+     * @param {int} ordre la position dans la liste des plugins 
+     * @returns {object} l'élément 
+     * @memberof ConfigBuilder
+     *
+     */
+    getPlugin(ordre) {
+        this._debugInfo('getPlugin', [...arguments]);
+        return this._getElement(this.plugins, ordre);
+    }
 
     /**
      * Ajoute un loader/Rule simple à la configuration webpack, à la position indiquée.
@@ -207,6 +254,31 @@ class ConfigBuilder {
         this._insertElt(this.loaders, newLoader)
     }
 
+    /**
+     * Retire un loader à la configuration webpack, à la position indiquée.
+     * 
+     * @param {int} ordre la position dans la liste des loaders 
+     * @returns {object} l'élément supprimé
+     * @memberof ConfigBuilder
+     *
+     */
+    removeLoader(ordre) {
+        this._debugInfo('removeLoader', [...arguments]);
+        return this._removeElt(this.loaders, ordre);
+    }
+
+    /**
+     * Accède à un loader de la configuration webpack, à la position indiquée.
+     * 
+     * @param {int} ordre la position dans la liste des loaders 
+     * @returns {object} l'élément 
+     * @memberof ConfigBuilder
+     *
+     */
+    getLoader(ordre) {
+        this._debugInfo('getLoader', [...arguments]);
+        return this._getElement(this.loaders, ordre);
+    }
 
     /**
      * Indique si les sourcemaps doivent être utilisé ou non.

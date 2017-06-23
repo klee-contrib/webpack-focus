@@ -12,6 +12,7 @@ import { choosePort, createCompiler, prepareUrls } from 'react-dev-utils/Webpack
 // Environment settings
 const {
     OUTPUT_DIR = './dist',              // Output directory
+    DEV_SERVER_PROTOCOL = 'http',       // Dev server hostname
     DEV_SERVER_HOST = 'localhost',      // Dev server hostname
     DEV_SERVER_PORT = 3000,             // Dev server port
     API_PROTOCOL = 'http',              // API protocol
@@ -72,7 +73,7 @@ export const serverLauncher = (webpackConfig, serverConfig = {}) => {
                 return;
             }
 
-            const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
+            const protocol = DEV_SERVER_PROTOCOL;
             //const appName = require(paths.appPackageJson).name;
             const urls = prepareUrls(protocol, DEV_SERVER_HOST, port);
             // Create a webpack compiler that is configured with custom messages.
@@ -104,12 +105,4 @@ export const serverLauncher = (webpackConfig, serverConfig = {}) => {
             }
             process.exit(1);
         });
-
-
-    // new WebpackDevServer(webpack(webpackConfig), defaultsDeep(serverConfig, defaultServerConfig)).listen(DEV_SERVER_PORT, DEV_SERVER_HOST, err => {
-    //     if (err) {
-    //         console.error(err);
-    //     }
-    //     console.log('Webpack dev server listening at %s:%s', DEV_SERVER_HOST, DEV_SERVER_PORT);
-    // });
 };

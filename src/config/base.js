@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import path from 'path';
 
 import ConfigBuilder from '../webpack-utilities/config-builder';
@@ -16,18 +17,23 @@ const baseConfig = (environnement, definedVariables) => {
     config._debugInfo('logEnv', environnement);
     config._debugInfo('logParsedEnv', parsedEnv);
 
-    // Ajout du point d'entrée
-    config.addEntry(parsedEnv.ENTRY_FILE_PATH);
+    // Ajout du point d'entrée pour le polyfill
+    if (parsedEnv.USE_POLYFILL) {
+        config.addEntry('babel-polyfill');
+    }
 
     // Ajout des points d'entrée pour le hot reload
     if (parsedEnv.DEV && parsedEnv.HOT_RELOAD) {
+
+        config.addEntry('react-hot-loader/patch');
         config.addEntry('react-dev-utils/webpackHotDevClient');
         // Errors should be considered fatal in development
         config.addEntry('react-error-overlay');
-
-        // config.addEntry(`webpack-dev-server/client?http://${parsedEnv.DEV_SERVER_HOST}:${parsedEnv.DEV_SERVER_PORT}`);
         config.addEntry('webpack/hot/only-dev-server');
     }
+
+    // Ajout des points d'entrée pour le hot reload
+    config.addEntry(parsedEnv.ENTRY_FILE_PATH);
 
     // Ajout du fichier 
     config.setOuputPath(parsedEnv.OUTPUT_DIR, true);
@@ -37,6 +43,7 @@ const baseConfig = (environnement, definedVariables) => {
 
     // Ajout des variables injectées
     config.addDefinedVariable('__DEV__', parsedEnv.DEV ? 'true' : 'false');
+    config.addDefinedVariable('__HOT_RELOAD__', parsedEnv.HOT_RELOAD ? 'true' : 'false')
     config.addDefinedVariable('__ANCHOR_CLASS__', JSON.stringify(parsedEnv.ANCHOR_CLASS));
     config.addDefinedVariable('__PACKAGE_JSON_PATH__', JSON.stringify(parsedEnv.PACKAGE_JSON_PATH));
     // config.addDefinedVariable('__USER__', JSON.stringify(USER));
@@ -75,22 +82,41 @@ const baseConfig = (environnement, definedVariables) => {
         }));
     }
 
+    if (parsedEnv.ANALYZE) {
+        config.addPlugin(100, new BundleAnalyzerPlugin());
+    }
     // GESTION DES LOADERS
     // Loader pour les source-map
     if (parsedEnv.SOURCE_MAPS) {
         config.addComplexLoader(10, {
-            test: /\.js$/,
+            test: /\.(js|jsx)$/,
             enforce: 'pre',
             exclude: /node_modules\\css-loader/,
             loader: 'source-map-loader'
         });
     }
+    // // Loader pour eslint
+    // config.addComplexLoader(15, {
+    //     test: /\.(js|jsx)/,
+    //     enforce: 'pre',
+    //     exclude: /node_modules/,
+    //     loader: 'eslint-loader',
+    //     options: {
+    //         cache: true,
+    //         emitError: false,
+    //         emitWarning: false,
+    //         failOnError: false,
+    //         failOnWarning: false
+    //     }
+    // });
+
     // Loader pour Babel (transpile ES6 => ES5, exclude des node_modules, attendus en ES5)
     config.addComplexLoader(20, {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
         options: {
+            cacheDirectory: true,
             presets: ['babel-preset-focus']
         }
     });

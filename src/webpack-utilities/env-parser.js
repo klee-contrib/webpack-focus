@@ -1,7 +1,6 @@
-import defaultsDeep from 'lodash/defaultsDeep';
-
 const defaultEnv = {
     DEV: 'true',                               // Toggles the hot reloading
+    DEV_SERVER_PROTOCOL: 'http',               // Dev server protocol                
     DEV_SERVER_HOST: 'localhost',              // Dev server hostname
     DEV_SERVER_PORT: 3000,                     // Dev server port
     ENTRY_FILE_PATH: './src',                  // Entry file to build the application
@@ -19,7 +18,9 @@ const defaultEnv = {
     HOT_RELOAD: 'false',                       // Flag to disable hot reload, even in DEV
     DROP_CONSOLE: 'false',                     // If console statement should be dropped when MINIMIFY
     LEGACY_SEARCH_API: 'false',                // If the legacy search API should be used
-    NODE_ENV: 'dev'                            // If the environnement is developpement, or production 
+    NODE_ENV: 'dev',                           // If the environnement is developpement, or production
+    USE_POLYFILL: 'true',                      // If Babel polyfill should be used as an entry
+    ANALYZE: 'true'                            // Use webpack bundle analyzer
 }
 
 const defaultHtmlTemplate = (env) => (`<html>
@@ -35,7 +36,7 @@ const defaultHtmlTemplate = (env) => (`<html>
 
 
 const envParser = (env) => {
-    const newEnv = defaultsDeep({}, env, defaultEnv);
+    const newEnv = { ...defaultEnv, ...env };
     newEnv.DEV = JSON.parse(newEnv.DEV);
     newEnv.HOT_RELOAD = JSON.parse(newEnv.HOT_RELOAD);
     newEnv.GENERATE_HTML = JSON.parse(newEnv.GENERATE_HTML);
@@ -44,8 +45,10 @@ const envParser = (env) => {
     newEnv.DROP_CONSOLE = JSON.parse(newEnv.DROP_CONSOLE);
     newEnv.SOURCE_MAPS = JSON.parse(newEnv.SOURCE_MAPS);
     newEnv.LEGACY_SEARCH_API = JSON.parse(newEnv.LEGACY_SEARCH_API);
+    newEnv.USE_POLYFILL = JSON.parse(newEnv.USE_POLYFILL);
+    newEnv.ANALYZE = JSON.parse(newEnv.ANALYZE);
 
-    newEnv.OUTPUT_PUBLIC_PATH = newEnv.OUTPUT_PUBLIC_PATH !== undefined ? newEnv.OUTPUT_PUBLIC_PATH : `http://${newEnv.DEV_SERVER_HOST}:${newEnv.DEV_SERVER_PORT}/`;
+    newEnv.OUTPUT_PUBLIC_PATH = newEnv.OUTPUT_PUBLIC_PATH !== undefined ? newEnv.OUTPUT_PUBLIC_PATH : `${newEnv.DEV_SERVER_PROTOCOL}://${newEnv.DEV_SERVER_HOST}:${newEnv.DEV_SERVER_PORT}/`;
 
     newEnv.HTML_TEMPLATE = defaultHtmlTemplate;
     return newEnv;
