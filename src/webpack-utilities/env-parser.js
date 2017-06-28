@@ -1,6 +1,6 @@
 const defaultEnv = {
     DEV: 'true',                               // Toggles the hot reloading
-    DEV_SERVER_PROTOCOL: 'http',               // Dev server protocol                
+    DEV_SERVER_PROTOCOL: 'http',               // Dev server protocol
     DEV_SERVER_HOST: 'localhost',              // Dev server hostname
     DEV_SERVER_PORT: 3000,                     // Dev server port
     ENTRY_FILE_PATH: './src',                  // Entry file to build the application
@@ -18,9 +18,11 @@ const defaultEnv = {
     HOT_RELOAD: 'false',                       // Flag to disable hot reload, even in DEV
     DROP_CONSOLE: 'false',                     // If console statement should be dropped when MINIMIFY
     LEGACY_SEARCH_API: 'false',                // If the legacy search API should be used
-    NODE_ENV: 'dev',                           // If the environnement is developpement, or production
+    NODE_ENV: 'development',                   // If the environnement is developpement, or production
     USE_POLYFILL: 'true',                      // If Babel polyfill should be used as an entry
-    ANALYZE: 'true'                            // Use webpack bundle analyzer
+    ANALYZE: 'false',                          // Use webpack bundle analyzer
+    ASSET_LIMIT: '10000',                      // Size threshold in bytes to include in base64 in css,
+    LEGACY_OUTPUT: 'false'                     // Output content to ES5
 }
 
 const defaultHtmlTemplate = (env) => (`<html>
@@ -47,6 +49,8 @@ const envParser = (env) => {
     newEnv.LEGACY_SEARCH_API = JSON.parse(newEnv.LEGACY_SEARCH_API);
     newEnv.USE_POLYFILL = JSON.parse(newEnv.USE_POLYFILL);
     newEnv.ANALYZE = JSON.parse(newEnv.ANALYZE);
+    newEnv.ASSET_LIMIT = JSON.parse(newEnv.ASSET_LIMIT);
+    newEnv.LEGACY_OUTPUT = JSON.parse(newEnv.LEGACY_OUTPUT);
 
     newEnv.OUTPUT_PUBLIC_PATH = newEnv.OUTPUT_PUBLIC_PATH !== undefined ? newEnv.OUTPUT_PUBLIC_PATH : `${newEnv.DEV_SERVER_PROTOCOL}://${newEnv.DEV_SERVER_HOST}:${newEnv.DEV_SERVER_PORT}/`;
 

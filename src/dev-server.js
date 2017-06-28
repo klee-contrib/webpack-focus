@@ -35,7 +35,7 @@ const defaultServerConfig = {
     watchOptions: {
         ignored: /node_modules/
     },
-    clientLogLevel: 'none',
+    clientLogLevel: 'info',
     watchContentBase: true,
     quiet: true,
     overlay: false,

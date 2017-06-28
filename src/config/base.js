@@ -1,9 +1,13 @@
 import webpack from 'webpack';
+import path from 'path';
+import glob from 'glob';
+
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import path from 'path';
-
+import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import ConfigBuilder from '../webpack-utilities/config-builder';
 import envParser from '../webpack-utilities/env-parser';
 
@@ -25,17 +29,18 @@ const baseConfig = (environnement, definedVariables) => {
     // Ajout des points d'entrée pour le hot reload
     if (parsedEnv.DEV && parsedEnv.HOT_RELOAD) {
 
-        config.addEntry('react-hot-loader/patch');
+        // config.addEntry('webpack-dev-server/client');
         config.addEntry('react-dev-utils/webpackHotDevClient');
         // Errors should be considered fatal in development
         config.addEntry('react-error-overlay');
         config.addEntry('webpack/hot/only-dev-server');
+        config.addEntry('react-hot-loader/patch');
     }
 
     // Ajout des points d'entrée pour le hot reload
     config.addEntry(parsedEnv.ENTRY_FILE_PATH);
 
-    // Ajout du fichier 
+    // Ajout du fichier
     config.setOuputPath(parsedEnv.OUTPUT_DIR, true);
     config.setAssetsPublicPath(parsedEnv.OUTPUT_PUBLIC_PATH);
     config.setFilename(parsedEnv.USE_VERSION ? parsedEnv.npm_package_name + '.' + parsedEnv.npm_package_version : parsedEnv.npm_package_name);
@@ -54,13 +59,22 @@ const baseConfig = (environnement, definedVariables) => {
     for (let prop in definedVariables) {
         config.addDefinedVariable(prop, definedVariables[prop]);
     }
+
+    // GESTION DES ALIAS
+    config.addAlias('react', './node_modules/react');
+    config.addAlias('react-dom', './node_modules/react-dom');
+    config.addAlias('moment', './node_modules/moment');
+    config.addAlias('numeral', './node_modules/numeral');
+    config.addAlias('material-design-lite', './node_modules/material-design-lite');
+
     // GESTION DES PLUGINS
     // Les fonctions seront résolues au moment de la création de la config webpack.
     config.addPlugin(10, () => new webpack.DefinePlugin(config.getDefinedVariables()));
     config.addPlugin(20, () => new ExtractTextPlugin(config.getCssFilename()));
     // Gestion du HOT_RELOAD
-    if (parsedEnv.DEV && parsedEnv.HOT_RELOAD) {
+    if (parsedEnv.HOT_RELOAD) {
         config.addPlugin(30, new webpack.HotModuleReplacementPlugin());
+        config.addPlugin(35, new webpack.NamedModulesPlugin());
     }
     // Génération d'un index HTML
     if (parsedEnv.GENERATE_HTML) {
@@ -69,17 +83,40 @@ const baseConfig = (environnement, definedVariables) => {
             templateContent: env.HTML_TEMPLATE(env)
         }));
     }
+
+
     // Gestion de la minification
     if (parsedEnv.MINIMIFY) {
-        config.addPlugin(50, env => new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                screw_ie8: true,
+        config.addPlugin(50, env => new UglifyJsPlugin({
+            sourceMap: env.SOURCE_MAPS,
+            extractComments: {
+                // banner: true
+            },
+            uglifyOptions: {
+                ie8: false,
                 warnings: false,
-                drop_console: env.DROP_CONSOLE,
-                drop_debugger: true,
-                passes: 2
+                compress: {
+                    drop_console: env.DROP_CONSOLE,
+                    drop_debugger: true,
+                    passes: 2,
+                    keep_infinity: true
+                    // ecma: 6
+                },
+                output: {
+                    // ecma: 6,
+                    // preamble: '/** OHHHH YEEAAAAAH **/',
+                    // comments: 'all'
+                }
             }
         }));
+    }
+
+    config.addPlugin(60, new CaseSensitivePathsPlugin());
+    config.addPlugin(70, new WatchMissingNodeModulesPlugin(path.join(process.cwd(), 'node_modules')));
+    config.addPlugin(80, new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+
+    if (!parsedEnv.DEV) {
+        config.addPlugin(90, new webpack.IgnorePlugin(/focus-devtools/));
     }
 
     if (parsedEnv.ANALYZE) {
@@ -123,47 +160,66 @@ const baseConfig = (environnement, definedVariables) => {
     // Loader pour le SASS (Extraction du fichier JS, vers un fichier CSS indépendant, cf plugin)
     // Utilisation de PostCss ajouté
     config.addComplexLoader(30, env => ({
-        test: /\.scss$/,
+        test: /\.(css|scss)$/,
         use: ExtractTextPlugin.extract({
             fallback: 'style-loader',
             use: [
                 {
                     loader: 'css-loader',
                     options: {
-                        minimize: env.MINIMIFY ? { safe: true, sourcemap: false } : false,
-                        sourceMap: false,
-                        importLoaders: 1
+                        minimize: false,
+                        // sourceMap: env.SOURCE_MAPS,
+                        importLoaders: 2
                     }
                 },
-                'postcss-loader', // Options should go into postcss.config.js
-                'sass-loader'
-            ]
-        })
-    }));
-    // Loader pour le CSS (Extraction du fichier JS, vers un fichier CSS indépendant, cf plugin)
-    // Utilisation de PostCss ajouté
-    config.addComplexLoader(40, env => ({
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: [
                 {
-                    loader: 'css-loader',
+                    loader: 'postcss-loader',
                     options: {
-                        minimize: env.MINIMIFY ? { safe: true, sourcemap: false } : false,
-                        sourceMap: false,
-                        importLoaders: 1
+                        // Other options should go into postcss.config.js
+                        config: {
+                            path: path.join(process.cwd(), 'postcss.config.js')
+                        }
+                        // sourceMap: env.SOURCE_MAPS
                     }
                 },
-                'postcss-loader' // Options should go into postcss.config.js
+                {
+                    loader: 'sass-loader',
+                    options: {
+                        includePaths: glob.sync('node_modules').map((d) => path.join(process.cwd(), d))
+                        // sourceMap: env.SOURCE_MAPS
+                    }
+                }
             ]
         })
     }));
+    // // Loader pour le CSS (Extraction du fichier JS, vers un fichier CSS indépendant, cf plugin)
+    // // Utilisation de PostCss ajouté
+    // config.addComplexLoader(40, env => ({
+    //     test: /\.css$/,
+    //     use: ExtractTextPlugin.extract({
+    //         fallback: 'style-loader',
+    //         use: [
+    //             {
+    //                 loader: 'css-loader',
+    //                 options: {
+    //                     minimize: env.MINIMIFY ? { safe: true, sourcemap: false } : false,
+    //                     sourceMap: false,
+    //                     importLoaders: 1
+    //                 }
+    //             },
+    //             'postcss-loader' // Options should go into postcss.config.js
+    //         ]
+    //     })
+    // }));
     // Loader pour les ressources externes
-    config.addSimpleLoader(50, /\.(png|jpg|jpeg|gif|ttf|eot|woff|woff2|svg)(\?.*)?$/, 'url-loader', {
-        limit: 50000,
-        name: '[name]_[sha512:hash:base64:7].[ext]'
-    });
+    config.addComplexLoader(50, env => ({
+        test: /\.(png|jpg|jpeg|gif|ttf|eot|woff|woff2|svg)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+            limit: env.ASSET_LIMIT,
+            name: '[name]_[sha512:hash:base64:7].[ext]'
+        }
+    }));
 
     return config;
 };
