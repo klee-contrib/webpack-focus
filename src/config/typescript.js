@@ -46,6 +46,10 @@ const baseConfig = (environnement, definedVariables) => {
     config.setFilename(parsedEnv.USE_VERSION ? parsedEnv.npm_package_name + '.' + parsedEnv.npm_package_version : parsedEnv.npm_package_name);
     config.useSourceMaps(parsedEnv.SOURCE_MAPS);
 
+    if (parsedEnv.CHUNK_FILE_NAME) {
+        config.setChunkFileName(parsedEnv.CHUNK_FILE_NAME);
+    }
+
     // Ajout des variables injectées
     // config.addDefinedVariable('__DEV__', parsedEnv.DEV ? 'true' : 'false');
     // config.addDefinedVariable('__HOT_RELOAD__', parsedEnv.HOT_RELOAD ? 'true' : 'false')
@@ -196,19 +200,19 @@ const baseConfig = (environnement, definedVariables) => {
                 {
                     loader: 'postcss-loader'//,
                     // options: {
-                        //Other options should go into postcss.config.js
-                        // config: {
-                             // path: './postcss.config.js'
-                        // },
-                        // variableFile: env.CSS_VARIABLE_FILE
-                        //sourceMap: env.SOURCE_MAPS
+                    //Other options should go into postcss.config.js
+                    // config: {
+                    // path: './postcss.config.js'
+                    // },
+                    // variableFile: env.CSS_VARIABLE_FILE
+                    //sourceMap: env.SOURCE_MAPS
                     // }
                 }
             ]
         })
     }));
-	
-	config.addComplexLoader(45, env => ({
+
+    config.addComplexLoader(45, env => ({
         test: /\.(scss)$/,
         use: ExtractTextPlugin.extract({
             fallback: 'style-loader',
@@ -224,12 +228,12 @@ const baseConfig = (environnement, definedVariables) => {
                 {
                     loader: 'postcss-loader'//,
                     // options: {
-                        //Other options should go into postcss.config.js
-                        // config: {
-                            // path: './postcss.config.js'
-                        // },
-                        // variableFile: env.CSS_VARIABLE_FILE
-                        //sourceMap: env.SOURCE_MAPS
+                    //Other options should go into postcss.config.js
+                    // config: {
+                    // path: './postcss.config.js'
+                    // },
+                    // variableFile: env.CSS_VARIABLE_FILE
+                    //sourceMap: env.SOURCE_MAPS
                     // }
                 },
                 {
