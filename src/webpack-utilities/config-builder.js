@@ -106,7 +106,7 @@ class ConfigBuilder {
      * @param {string} name
      */
     setChunkFileName(name) {
-        this._debugInfo('setAssetsPublicPath', [...arguments]);
+        this._debugInfo('setChunkFileName', [...arguments]);
         this.output.chunkFilename = name;
     }
 

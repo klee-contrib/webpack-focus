@@ -45,10 +45,8 @@ const baseConfig = (environnement, definedVariables) => {
     config.setAssetsPublicPath(parsedEnv.OUTPUT_PUBLIC_PATH);
     config.setFilename(parsedEnv.USE_VERSION ? parsedEnv.npm_package_name + '.' + parsedEnv.npm_package_version : parsedEnv.npm_package_name);
     config.useSourceMaps(parsedEnv.SOURCE_MAPS);
+    config.setChunkFileName(parsedEnv.CHUNK_FILE_NAME);
 
-    if (parsedEnv.CHUNK_FILE_NAME) {
-        config.setChunkFileName(parsedEnv.CHUNK_FILE_NAME);
-    }
 
     // Ajout des variables injectées
     // config.addDefinedVariable('__DEV__', parsedEnv.DEV ? 'true' : 'false');

@@ -22,7 +22,8 @@ const defaultEnv = {
     USE_POLYFILL: 'true',                      // If Babel polyfill should be used as an entry
     ANALYZE: 'false',                          // Use webpack bundle analyzer
     ASSET_LIMIT: '10000',                      // Size threshold in bytes to include in base64 in css,
-    LEGACY_OUTPUT: 'false'                     // Output content to ES5
+    LEGACY_OUTPUT: 'false',                    // Output content to ES5
+    CHUNK_FILE_NAME: '[name]_[hash].[ext]'
 }
 
 const defaultHtmlTemplate = (env) => (`<html>
