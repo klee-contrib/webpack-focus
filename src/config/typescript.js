@@ -244,15 +244,35 @@ const baseConfig = (environnement, definedVariables) => {
             ]
         })
     }));
-    // Loader pour les ressources externes
+    // Loader pour les fonts
     config.addComplexLoader(50, env => ({
-        test: /\.(png|jpg|jpeg|gif|ttf|eot|woff|woff2|svg)(\?.*)?$/,
+        test: /\.(ttf|eot|woff|woff2|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
             limit: env.ASSET_LIMIT,
-            name: '[name]_[sha512:hash:base64:7].[ext]'
+            name: 'fonts/[name]_[sha512:hash:base64:7].[ext]'
         }
     }));
+
+    // Loader pour les images
+    config.addComplexLoader(55, env => ({
+        test: /\.(png|jpg|jpeg|gif)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+            limit: env.ASSET_LIMIT,
+            name: 'img/[name]_[sha512:hash:base64:7].[ext]'
+        }
+    }));
+
+    // Default loader pour les fichiers inconnu
+    // config.addComplexLoader(70, env => ({
+    //     test: /^(?!(\.(jsx?|css|tsx?|json|scss|ttf|eot|woff|woff2|svg|png|jpg|jpeg|gif)$)).*$/,
+    //     loader: 'file-loader',
+    //     options: {
+    //         limit: env.ASSET_LIMIT,
+    //         name: 'misc/[name]_[sha512:hash:base64:7].[ext]'
+    //     }
+    // }));
 
     return config;
 };
