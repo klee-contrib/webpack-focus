@@ -134,6 +134,17 @@ var ConfigBuilder = function () {
     };
 
     /**
+     * Indique le nom des chunk en cas de require.ensure.
+     * @param {string} name
+     */
+
+
+    ConfigBuilder.prototype.setChunkFileName = function setChunkFileName(name) {
+        this._debugInfo('setChunkFileName', [].concat(Array.prototype.slice.call(arguments)));
+        this.output.chunkFilename = name;
+    };
+
+    /**
      * Indique le nom du fichier d'output, sans l'extension. Peut contenir [name], [id] et [contenthash]
      * Cf https://webpack.js.org/configuration/output/#output-filename
      * Cf https://github.com/webpack-contrib/extract-text-webpack-plugin

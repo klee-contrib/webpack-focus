@@ -4,12 +4,21 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 exports.default = function (_ref) {
     var file = _ref.file,
         options = _ref.options,
         env = _ref.env;
 
-    var variables = require('./' + options.variableFile);
+    var variables = {};
+    if (process.env.CSS_VARIABLE_FILE) {
+        variables = require(_path2.default.resolve('./' + process.env.CSS_VARIABLE_FILE));
+    }
     return {
         plugins: {
             'postcss-flexbugs-fixes': true,
