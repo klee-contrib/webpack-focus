@@ -169,6 +169,18 @@ var baseConfig = function baseConfig(environnement, definedVariables) {
         });
     }
 
+    // Default loader pour les fichiers inconnu
+    config.addComplexLoader(15, function (env) {
+        return {
+            exclude: [/\.(js|jsx)$/, /\.(ts|tsx)$/, /\.css$/, /\.scss$/, /\.json$/, /\.(ttf|eot|woff|woff2|svg)(\?.*)?$/, /\.(png|jpg|jpeg|gif)(\?.*)?$/],
+            loader: 'file-loader',
+            options: {
+                limit: env.ASSET_LIMIT,
+                name: 'misc/[name]_[sha512:hash:base64:7].[ext]'
+            }
+        };
+    });
+
     config.addComplexLoader(20, {
         test: /\.tsx?$/,
         exclude: /node_modules/,
@@ -302,16 +314,6 @@ var baseConfig = function baseConfig(environnement, definedVariables) {
             }
         };
     });
-
-    // Default loader pour les fichiers inconnu
-    // config.addComplexLoader(70, env => ({
-    //     test: /^(?!(\.(jsx?|css|tsx?|json|scss|ttf|eot|woff|woff2|svg|png|jpg|jpeg|gif)$)).*$/,
-    //     loader: 'file-loader',
-    //     options: {
-    //         limit: env.ASSET_LIMIT,
-    //         name: 'misc/[name]_[sha512:hash:base64:7].[ext]'
-    //     }
-    // }));
 
     return config;
 };
