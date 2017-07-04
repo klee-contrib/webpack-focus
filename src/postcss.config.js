@@ -1,5 +1,10 @@
+import path from 'path';
+
 export default ({ file, options, env }) => {
-    const variables = require('./' + options.variableFile);
+	let variables = {};
+	if (process.env.CSS_VARIABLE_FILE) {
+		variables = require(path.resolve('./' + process.env.CSS_VARIABLE_FILE));
+	} 
     return {
         plugins: {
             'postcss-flexbugs-fixes': true,

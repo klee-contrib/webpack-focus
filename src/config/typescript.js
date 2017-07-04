@@ -1,8 +1,8 @@
 import webpack from 'webpack';
 import path from 'path';
-// import glob from 'glob';
+import glob from 'glob';
 import getLocalIdent from 'css-loader/lib/getLocalIdent';
-// import HtmlWebpackPlugin from 'html-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 // import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
@@ -45,6 +45,8 @@ const baseConfig = (environnement, definedVariables) => {
     config.setAssetsPublicPath(parsedEnv.OUTPUT_PUBLIC_PATH);
     config.setFilename(parsedEnv.USE_VERSION ? parsedEnv.npm_package_name + '.' + parsedEnv.npm_package_version : parsedEnv.npm_package_name);
     config.useSourceMaps(parsedEnv.SOURCE_MAPS);
+    config.setChunkFileName(parsedEnv.CHUNK_FILE_NAME);
+
 
     // Ajout des variables injectées
     // config.addDefinedVariable('__DEV__', parsedEnv.DEV ? 'true' : 'false');
@@ -77,12 +79,12 @@ const baseConfig = (environnement, definedVariables) => {
     //     config.addPlugin(35, new webpack.NamedModulesPlugin());
     // }
     // // Génération d'un index HTML
-    // if (parsedEnv.GENERATE_HTML) {
-    //     config.addPlugin(40, env => new HtmlWebpackPlugin({
-    //         inject: 'body',
-    //         templateContent: env.HTML_TEMPLATE(env)
-    //     }));
-    // }
+    if (parsedEnv.GENERATE_HTML) {
+        config.addPlugin(40, env => new HtmlWebpackPlugin({
+            inject: 'body',
+            templateContent: env.HTML_TEMPLATE(env)
+        }));
+    }
 
 
     // Gestion de la minification
@@ -168,8 +170,8 @@ const baseConfig = (environnement, definedVariables) => {
     // });
     // Loader pour le SASS (Extraction du fichier JS, vers un fichier CSS indépendant, cf plugin)
     // Utilisation de PostCss ajouté
-    config.addComplexLoader(30, env => ({
-        test: /\.(css|scss)$/,
+    config.addComplexLoader(40, env => ({
+        test: /\.(css)$/,
         use: ExtractTextPlugin.extract({
             fallback: 'style-loader',
             use: [
@@ -178,7 +180,7 @@ const baseConfig = (environnement, definedVariables) => {
                     options: {
                         minimize: false,
                         // sourceMap: env.SOURCE_MAPS,
-                        importLoaders: 2,
+                        importLoaders: 1,
                         modules: true,
                         localIdentName: '[path][name]-[local]',
                         getLocalIdent: (loaderContext, localIdentName, localName, options) => {
@@ -194,15 +196,43 @@ const baseConfig = (environnement, definedVariables) => {
                     }
                 },
                 {
-                    loader: 'postcss-loader',
+                    loader: 'postcss-loader'//,
+                    // options: {
+                    //Other options should go into postcss.config.js
+                    // config: {
+                    // path: './postcss.config.js'
+                    // },
+                    // variableFile: env.CSS_VARIABLE_FILE
+                    //sourceMap: env.SOURCE_MAPS
+                    // }
+                }
+            ]
+        })
+    }));
+
+    config.addComplexLoader(45, env => ({
+        test: /\.(scss)$/,
+        use: ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: [
+                {
+                    loader: 'css-loader',
                     options: {
-                        // Other options should go into postcss.config.js
-                        config: {
-                            path: path.join(process.cwd(), 'postcss.config.js')
-                        },
-                        variableFile: env.CSS_VARIABLE_FILE
-                        // sourceMap: env.SOURCE_MAPS
+                        minimize: false,
+                        // sourceMap: env.SOURCE_MAPS,
+                        importLoaders: 2
                     }
+                },
+                {
+                    loader: 'postcss-loader'//,
+                    // options: {
+                    //Other options should go into postcss.config.js
+                    // config: {
+                    // path: './postcss.config.js'
+                    // },
+                    // variableFile: env.CSS_VARIABLE_FILE
+                    //sourceMap: env.SOURCE_MAPS
+                    // }
                 },
                 {
                     loader: 'sass-loader',
@@ -214,15 +244,35 @@ const baseConfig = (environnement, definedVariables) => {
             ]
         })
     }));
-    // Loader pour les ressources externes
+    // Loader pour les fonts
     config.addComplexLoader(50, env => ({
-        test: /\.(png|jpg|jpeg|gif|ttf|eot|woff|woff2|svg)(\?.*)?$/,
+        test: /\.(ttf|eot|woff|woff2|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
             limit: env.ASSET_LIMIT,
-            name: '[name]_[sha512:hash:base64:7].[ext]'
+            name: 'fonts/[name]_[sha512:hash:base64:7].[ext]'
         }
     }));
+
+    // Loader pour les images
+    config.addComplexLoader(55, env => ({
+        test: /\.(png|jpg|jpeg|gif)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+            limit: env.ASSET_LIMIT,
+            name: 'img/[name]_[sha512:hash:base64:7].[ext]'
+        }
+    }));
+
+    // Default loader pour les fichiers inconnu
+    // config.addComplexLoader(70, env => ({
+    //     test: /^(?!(\.(jsx?|css|tsx?|json|scss|ttf|eot|woff|woff2|svg|png|jpg|jpeg|gif)$)).*$/,
+    //     loader: 'file-loader',
+    //     options: {
+    //         limit: env.ASSET_LIMIT,
+    //         name: 'misc/[name]_[sha512:hash:base64:7].[ext]'
+    //     }
+    // }));
 
     return config;
 };
