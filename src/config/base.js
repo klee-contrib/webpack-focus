@@ -45,6 +45,7 @@ const baseConfig = (environnement, definedVariables) => {
     config.setAssetsPublicPath(parsedEnv.OUTPUT_PUBLIC_PATH);
     config.setFilename(parsedEnv.USE_VERSION ? parsedEnv.npm_package_name + '.' + parsedEnv.npm_package_version : parsedEnv.npm_package_name);
     config.useSourceMaps(parsedEnv.SOURCE_MAPS);
+    config.setChunkFileName(parsedEnv.CHUNK_FILE_NAME);
 
     // Ajout des variables injectées
     config.addDefinedVariable('__DEV__', parsedEnv.DEV ? 'true' : 'false');
@@ -89,23 +90,14 @@ const baseConfig = (environnement, definedVariables) => {
     if (parsedEnv.MINIMIFY) {
         config.addPlugin(50, env => new UglifyJsPlugin({
             sourceMap: env.SOURCE_MAPS,
-            extractComments: {
-                // banner: true
-            },
+            parallel: true,
             uglifyOptions: {
-                ie8: false,
                 warnings: false,
                 compress: {
                     drop_console: env.DROP_CONSOLE,
                     drop_debugger: true,
                     passes: 2,
                     keep_infinity: true
-                    // ecma: 6
-                },
-                output: {
-                    // ecma: 6,
-                    // preamble: '/** OHHHH YEEAAAAAH **/',
-                    // comments: 'all'
                 }
             }
         }));
@@ -147,16 +139,35 @@ const baseConfig = (environnement, definedVariables) => {
     //     }
     // });
 
+    // Default loader pour les fichiers inconnu
+    config.addComplexLoader(15, env => ({
+        exclude: [
+            /\.(js|jsx)$/,
+            /\.(ts|tsx)$/,
+            /\.css$/,
+            /\.scss$/,
+            /\.json$/,
+            /\.(ttf|eot|woff|woff2|svg)(\?.*)?$/,
+            /\.(png|jpg|jpeg|gif)(\?.*)?$/
+        ],
+        loader: 'file-loader',
+        options: {
+            limit: env.ASSET_LIMIT,
+            name: 'misc/[name]_[sha512:hash:base64:7].[ext]'
+        }
+    }))
+
     // Loader pour Babel (transpile ES6 => ES5, exclude des node_modules, attendus en ES5)
     config.addComplexLoader(20, {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
-        exclude: /node_modules/,
+        exclude: { and: [/node_modules/, { not: /node_modules\/focus-*/ }] },
         options: {
             cacheDirectory: true,
             presets: ['babel-preset-focus']
         }
     });
+
     // Loader pour le SASS (Extraction du fichier JS, vers un fichier CSS indépendant, cf plugin)
     // Utilisation de PostCss ajouté
     config.addComplexLoader(30, env => ({
@@ -192,35 +203,26 @@ const baseConfig = (environnement, definedVariables) => {
             ]
         })
     }));
-    // // Loader pour le CSS (Extraction du fichier JS, vers un fichier CSS indépendant, cf plugin)
-    // // Utilisation de PostCss ajouté
-    // config.addComplexLoader(40, env => ({
-    //     test: /\.css$/,
-    //     use: ExtractTextPlugin.extract({
-    //         fallback: 'style-loader',
-    //         use: [
-    //             {
-    //                 loader: 'css-loader',
-    //                 options: {
-    //                     minimize: env.MINIMIFY ? { safe: true, sourcemap: false } : false,
-    //                     sourceMap: false,
-    //                     importLoaders: 1
-    //                 }
-    //             },
-    //             'postcss-loader' // Options should go into postcss.config.js
-    //         ]
-    //     })
-    // }));
-    // Loader pour les ressources externes
+
+    // Loader pour les fonts
     config.addComplexLoader(50, env => ({
-        test: /\.(png|jpg|jpeg|gif|ttf|eot|woff|woff2|svg)(\?.*)?$/,
+        test: /\.(ttf|eot|woff|woff2|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
             limit: env.ASSET_LIMIT,
-            name: '[name]_[sha512:hash:base64:7].[ext]'
+            name: 'fonts/[name]_[sha512:hash:base64:7].[ext]'
         }
     }));
 
+    // Loader pour les images
+    config.addComplexLoader(55, env => ({
+        test: /\.(png|jpg|jpeg|gif)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+            limit: env.ASSET_LIMIT,
+            name: 'img/[name]_[sha512:hash:base64:7].[ext]'
+        }
+    }));
     return config;
 };
 
