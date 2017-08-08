@@ -161,7 +161,7 @@ const baseConfig = (environnement, definedVariables) => {
     config.addComplexLoader(20, {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
-        exclude: { and: [/node_modules/, { not: /node_modules\/focus-*/ }] },
+        exclude: { and: [/node_modules/, { not: [ /node_modules\/focus-*/ ] }] },
         options: {
             cacheDirectory: true,
             presets: ['babel-preset-focus']
