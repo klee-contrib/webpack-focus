@@ -13,15 +13,12 @@ export default ({ file, options, env }) => {
             'postcss-flexbugs-fixes': true,
             'postcss-import': { root: file.dirname },
             'postcss-cssnext': {
+                browsers: browsers.split('|'),
                 features: {
                     customProperties: {
                         variables
                     }
                 }
-            },
-            autoprefixer: {
-                browsers: browsers.split('|'),
-                flexbox: 'no-2009'
             },
             cssnano: env === 'production' ? { preset: 'default', safe: true } : false
         }

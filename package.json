@@ -31,7 +31,6 @@
     "license": "MIT",
     "homepage": "https://github.com/KleeGroup/webpack-focus#readme",
     "dependencies": {
-        "autoprefixer": "7.1.2",
         "babel-loader": "7.1.1",
         "babel-polyfill": "6.23.0",
         "babel-preset-focus": "git://github.com/KleeGroup/babel-preset-focus.git#feature-updates-and-polyfill",

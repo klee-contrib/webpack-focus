@@ -71,7 +71,9 @@ const baseConfig = (environnement, definedVariables) => {
     // GESTION DES PLUGINS
     // Les fonctions seront résolues au moment de la création de la config webpack.
     config.addPlugin(10, () => new webpack.DefinePlugin(config.getDefinedVariables()));
-    config.addPlugin(20, () => new ExtractTextPlugin(config.getCssFilename()));
+    if (parsedEnv.HOT_RELOAD) {
+        config.addPlugin(20, () => new ExtractTextPlugin(config.getCssFilename()));
+    }
     // Gestion du HOT_RELOAD
     if (parsedEnv.HOT_RELOAD) {
         config.addPlugin(30, new webpack.HotModuleReplacementPlugin());
@@ -111,9 +113,11 @@ const baseConfig = (environnement, definedVariables) => {
     config.addPlugin(70, new WatchMissingNodeModulesPlugin(path.join(process.cwd(), 'node_modules')));
     config.addPlugin(80, new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 
-    if (!parsedEnv.DEV) {
-        config.addPlugin(90, new webpack.IgnorePlugin(/focus-devtools/));
-    }
+
+    // Not working well
+    // if (!parsedEnv.DEV) {
+    //     config.addPlugin(90, new webpack.IgnorePlugin(/focus-devtools/));
+    // }
 
     if (parsedEnv.ANALYZE) {
         config.addPlugin(100, new BundleAnalyzerPlugin());
