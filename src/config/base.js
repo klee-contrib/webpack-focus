@@ -27,7 +27,7 @@ const baseConfig = (environnement, definedVariables) => {
     }
 
     // Ajout des points d'entrée pour le hot reload
-    if (parsedEnv.DEV && parsedEnv.HOT_RELOAD) {
+    if (parsedEnv.HOT_RELOAD) {
 
         // config.addEntry('webpack-dev-server/client');
         config.addEntry('react-dev-utils/webpackHotDevClient');
@@ -97,7 +97,11 @@ const baseConfig = (environnement, definedVariables) => {
                     drop_console: env.DROP_CONSOLE,
                     drop_debugger: true,
                     passes: 2,
-                    keep_infinity: true
+                    keep_infinity: true,
+                    ecma: env.ECMA_MODE
+                },
+                output: {
+                    ecma: env.ECMA_MODE
                 }
             }
         }));
@@ -161,7 +165,7 @@ const baseConfig = (environnement, definedVariables) => {
     config.addComplexLoader(20, {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
-        exclude: { and: [/node_modules/, { not: [ /node_modules\/focus-*/ ] }] },
+        exclude: { and: [/node_modules/, { not: [/focus-*/] }] },
         options: {
             cacheDirectory: true,
             presets: ['babel-preset-focus']
@@ -170,39 +174,45 @@ const baseConfig = (environnement, definedVariables) => {
 
     // Loader pour le SASS (Extraction du fichier JS, vers un fichier CSS indépendant, cf plugin)
     // Utilisation de PostCss ajouté
-    config.addComplexLoader(30, env => ({
-        test: /\.(css|scss)$/,
-        use: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: [
-                {
-                    loader: 'css-loader',
-                    options: {
-                        minimize: false,
-                        // sourceMap: env.SOURCE_MAPS,
-                        importLoaders: 2
-                    }
-                },
-                {
-                    loader: 'postcss-loader',
-                    options: {
-                        // Other options should go into postcss.config.js
-                        config: {
-                            path: path.join(process.cwd(), 'postcss.config.js')
-                        }
-                        // sourceMap: env.SOURCE_MAPS
-                    }
-                },
-                {
-                    loader: 'sass-loader',
-                    options: {
-                        includePaths: glob.sync('node_modules').map((d) => path.join(process.cwd(), d))
-                        // sourceMap: env.SOURCE_MAPS
-                    }
+    let cssLoaders = [
+        {
+            loader: 'css-loader',
+            options: {
+                minimize: false,
+                // sourceMap: env.SOURCE_MAPS,
+                importLoaders: 2
+            }
+        },
+        {
+            loader: 'postcss-loader',
+            options: {
+                // Other options should go into postcss.config.js
+                config: {
+                    path: path.join(process.cwd(), 'postcss.config.js')
                 }
-            ]
-        })
-    }));
+                // sourceMap: env.SOURCE_MAPS
+            }
+        },
+        {
+            loader: 'sass-loader',
+            options: {
+                includePaths: glob.sync('node_modules').map((d) => path.join(process.cwd(), d))
+                // sourceMap: env.SOURCE_MAPS
+            }
+        }
+    ];
+
+    if (!parsedEnv.HOT_RELOAD) {
+        cssLoaders = ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: cssLoaders
+        });
+    }
+
+    config.addComplexLoader(30, {
+        test: /\.(css|scss)$/,
+        use: cssLoaders
+    });
 
     // Loader pour les fonts
     config.addComplexLoader(50, env => ({
