@@ -71,7 +71,7 @@ const baseConfig = (environnement, definedVariables) => {
     // GESTION DES PLUGINS
     // Les fonctions seront résolues au moment de la création de la config webpack.
     config.addPlugin(10, () => new webpack.DefinePlugin(config.getDefinedVariables()));
-    if (parsedEnv.HOT_RELOAD) {
+    if (!parsedEnv.HOT_RELOAD) {
         config.addPlugin(20, () => new ExtractTextPlugin(config.getCssFilename()));
     }
     // Gestion du HOT_RELOAD
