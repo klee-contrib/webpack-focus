@@ -211,6 +211,8 @@ const baseConfig = (environnement, definedVariables) => {
             fallback: 'style-loader',
             use: cssLoaders
         });
+    } else {
+        cssLoaders.unshift('style-loader');
     }
 
     config.addComplexLoader(30, {

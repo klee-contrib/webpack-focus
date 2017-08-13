@@ -20,7 +20,7 @@ export default ({ file, options, env }) => {
                     }
                 }
             },
-            cssnano: env === 'production' ? { preset: 'default', safe: true } : false
+            cssnano: env === 'production' ? { preset: 'default' } : false
         }
     }
 };
