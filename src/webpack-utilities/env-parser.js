@@ -25,8 +25,7 @@ const defaultEnv = {
     LEGACY_EXPORTS: 'false',                   // Output exports to legacy module.exports
     ECMA_MODE: '5',                            // Output mode for Uglify
     BROWERS: '>1%|last 4 versions|Firefox ESR|not ie < 9', // Browser query for Babel preset and PostCss
-    CHUNK_FILE_NAME: 'chunks/[name]_[hash].[ext]',
-    EXPERIMENTAL_FEATURES: 'false'
+    CHUNK_FILE_NAME: 'chunks/[name]_[hash].[ext]'
 }
 
 const defaultHtmlTemplate = (env) => (`<html>
@@ -56,7 +55,6 @@ const envParser = (env) => {
     newEnv.ASSET_LIMIT = JSON.parse(newEnv.ASSET_LIMIT);
     newEnv.LEGACY_EXPORTS = JSON.parse(newEnv.LEGACY_EXPORTS);
     newEnv.ECMA_MODE = +JSON.parse(newEnv.ECMA_MODE);
-    newEnv.EXPERIMENTAL_FEATURES = JSON.parse(newEnv.EXPERIMENTAL_FEATURES);
 
     newEnv.OUTPUT_PUBLIC_PATH = newEnv.OUTPUT_PUBLIC_PATH !== undefined ? newEnv.OUTPUT_PUBLIC_PATH : `${newEnv.DEV_SERVER_PROTOCOL}://${newEnv.DEV_SERVER_HOST}:${newEnv.DEV_SERVER_PORT}/`;
 
