@@ -5,6 +5,7 @@ const tsConfig = (environnement, definedVariables) => {
     const config = baseConfig(environnement, definedVariables);
 
     const babelLoader = config.removeLoader(20);
+    babelLoader.test = /\.(ts|tsx)$/;
     const tsLoader = env => {
         babelLoader.use.push({
             loader: 'ts-loader',
