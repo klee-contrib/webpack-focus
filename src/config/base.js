@@ -171,14 +171,14 @@ const baseConfig = (environnement, definedVariables) => {
     config.addComplexLoader(20, {
         test: /\.(js|jsx)$/,
         use: [
-            'cache-loader',
+           /* 'cache-loader',
             {
                 loader: 'thread-loader',
                 options: {
                     // Let's leave 2 cpus free, for plugins, OS, ...
                     workers: Math.max(cpus().length - 2, 1)
                 }
-            }, {
+            },*/ {
                 loader: 'babel-loader',
                 options: {
                     cacheDirectory: true,

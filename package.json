@@ -31,6 +31,7 @@
     "license": "MIT",
     "homepage": "https://github.com/KleeGroup/webpack-focus#readme",
     "dependencies": {
+        "autoprefixer": "7.1.2",
         "babel-loader": "7.1.1",
         "babel-polyfill": "6.23.0",
         "babel-preset-focus": "git://github.com/KleeGroup/babel-preset-focus.git#feature-updates-and-polyfill",
@@ -46,7 +47,7 @@
         "html-webpack-plugin": "2.30.1",
         "lodash": "4.17.4",
         "node-sass": "4.5.3",
-        "postcss-cssnext": "2.11.0",
+        "postcss-cssnext": "3.0.2",
         "postcss-flexbugs-fixes": "3.2.0",
         "postcss-import": "10.0.0",
         "postcss-loader": "2.0.6",
