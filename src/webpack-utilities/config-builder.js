@@ -205,7 +205,7 @@ class ConfigBuilder {
      */
     removePlugin(ordre) {
         this._debugInfo('removePlugin', [...arguments]);
-        return this._removeElt(this.plugins, ordre);
+        return (this._removeElt(this.plugins, ordre) || {}).plugin;
     }
 
     /**
@@ -218,7 +218,7 @@ class ConfigBuilder {
      */
     getPlugin(ordre) {
         this._debugInfo('getPlugin', [...arguments]);
-        return this._getElement(this.plugins, ordre);
+        return (this._getElement(this.plugins, ordre) || {}).plugin;
     }
 
     /**
@@ -273,7 +273,7 @@ class ConfigBuilder {
      */
     removeLoader(ordre) {
         this._debugInfo('removeLoader', [...arguments]);
-        return this._removeElt(this.loaders, ordre);
+        return (this._removeElt(this.loaders, ordre) || {}).loader;
     }
 
     /**
@@ -286,7 +286,7 @@ class ConfigBuilder {
      */
     getLoader(ordre) {
         this._debugInfo('getLoader', [...arguments]);
-        return this._getElement(this.loaders, ordre);
+        return (this._getElement(this.loaders, ordre) || {}).loader;
     }
 
     /**
