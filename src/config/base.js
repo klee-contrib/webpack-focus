@@ -1,7 +1,6 @@
 import webpack from 'webpack';
 import path from 'path';
-// import glob from 'glob';
-// import { cpus } from 'os';
+import { cpus } from 'os';
 
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
@@ -169,24 +168,28 @@ const baseConfig = (environnement, definedVariables) => {
     }))
 
     // Loader pour Babel (transpile ES6 => ES5, exclude des node_modules, attendus en ES5)
-    config.addComplexLoader(20, {
-        test: /\.(js|jsx)$/,
-        use: [
-           /* 'cache-loader',
+    const babelLoader = [];
+    if (parsedEnv.EXPERIMENTAL_FEATURES) {
+        babelLoader.push('cache-loader',
             {
                 loader: 'thread-loader',
                 options: {
                     // Let's leave 2 cpus free, for plugins, OS, ...
                     workers: Math.max(cpus().length - 2, 1)
                 }
-            },*/ {
-                loader: 'babel-loader',
-                options: {
-                    cacheDirectory: true,
-                    presets: ['babel-preset-focus']
-                }
-            }
-        ],
+            });
+    }
+    babelLoader.push({
+        loader: 'babel-loader',
+        options: {
+            cacheDirectory: true,
+            presets: ['babel-preset-focus']
+        }
+    });
+
+    config.addComplexLoader(20, {
+        test: /\.(js|jsx)$/,
+        use: babelLoader,
         exclude: { and: [/node_modules/, { not: [/focus-components/] }] } // FIXME for now, change /focus-*/ to /focus-components/
     });
 
