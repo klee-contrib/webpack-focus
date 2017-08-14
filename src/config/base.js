@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
-import glob from 'glob';
-import { cpus } from 'os';
+// import glob from 'glob';
+// import { cpus } from 'os';
 
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
@@ -9,9 +9,10 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+
 import ConfigBuilder from '../webpack-utilities/config-builder';
 import envParser from '../webpack-utilities/env-parser';
-
+import cssLoaderBuilder from '../webpack-utilities/css-loader-builder';
 
 const baseConfig = (environnement, definedVariables) => {
 
@@ -190,48 +191,7 @@ const baseConfig = (environnement, definedVariables) => {
     });
 
     // Loader pour le SASS (Extraction du fichier JS, vers un fichier CSS indépendant, cf plugin)
-    // Utilisation de PostCss ajouté
-    let cssLoaders = [
-        {
-            loader: 'css-loader',
-            options: {
-                minimize: false,
-                // sourceMap: env.SOURCE_MAPS,
-                importLoaders: 2
-            }
-        },
-        {
-            loader: 'postcss-loader',
-            options: {
-                // Other options should go into postcss.config.js
-                config: {
-                    path: path.join(process.cwd(), 'postcss.config.js')
-                }
-                // sourceMap: env.SOURCE_MAPS
-            }
-        },
-        {
-            loader: 'sass-loader',
-            options: {
-                includePaths: glob.sync('node_modules').map((d) => path.join(process.cwd(), d))
-                // sourceMap: env.SOURCE_MAPS
-            }
-        }
-    ];
-
-    if (!parsedEnv.HOT_RELOAD) {
-        cssLoaders = ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: cssLoaders
-        });
-    } else {
-        cssLoaders.unshift('style-loader');
-    }
-
-    config.addComplexLoader(30, {
-        test: /\.(css|scss)$/,
-        use: cssLoaders
-    });
+    config.addComplexLoader(30, cssLoaderBuilder(parsedEnv));
 
     // Loader pour les fonts
     config.addComplexLoader(50, env => ({
