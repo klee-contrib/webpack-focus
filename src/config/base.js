@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import glob from 'glob';
+import { cpus } from 'os';
 
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
@@ -10,6 +11,7 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import ConfigBuilder from '../webpack-utilities/config-builder';
 import envParser from '../webpack-utilities/env-parser';
+
 
 const baseConfig = (environnement, definedVariables) => {
 
@@ -168,12 +170,23 @@ const baseConfig = (environnement, definedVariables) => {
     // Loader pour Babel (transpile ES6 => ES5, exclude des node_modules, attendus en ES5)
     config.addComplexLoader(20, {
         test: /\.(js|jsx)$/,
-        loader: 'babel-loader',
-        exclude: { and: [/node_modules/, { not: [/focus-*/] }] },
-        options: {
-            cacheDirectory: true,
-            presets: ['babel-preset-focus']
-        }
+        use: [
+            'cache-loader',
+            {
+                loader: 'thread-loader',
+                options: {
+                    // Let's leave 2 cpus free, for plugins, OS, ...
+                    workers: Math.max(cpus().length - 2, 1)
+                }
+            }, {
+                loader: 'babel-loader',
+                options: {
+                    cacheDirectory: true,
+                    presets: ['babel-preset-focus']
+                }
+            }
+        ],
+        exclude: { and: [/node_modules/, { not: [/focus-components/] }] } // FIXME for now, change /focus-*/ to /focus-components/
     });
 
     // Loader pour le SASS (Extraction du fichier JS, vers un fichier CSS indépendant, cf plugin)
