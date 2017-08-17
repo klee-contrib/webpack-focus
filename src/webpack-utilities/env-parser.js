@@ -4,7 +4,9 @@ const defaultEnv = {
     DEV_SERVER_HOST: 'localhost',              // Dev server hostname
     DEV_SERVER_PORT: 3000,                     // Dev server port
     ENTRY_FILE_PATH: './src',                  // Entry file to build the application
+    // eslint-disable-next-line camelcase
     npm_package_name: 'your-project',          // Project name, automatically set by npm
+    // eslint-disable-next-line camelcase
     npm_package_version: '0.0.0',              // Project version, automatically set by npm
     OUTPUT_DIR: './dist',                      // Output directory
     PAGE_TITLE: 'You project landing page',    // Generated HTML page title

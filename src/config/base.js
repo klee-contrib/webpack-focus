@@ -85,6 +85,7 @@ const baseConfig = (environnement, definedVariables) => {
     if (parsedEnv.GENERATE_HTML) {
         config.addPlugin(40, env => new HtmlWebpackPlugin({
             inject: 'body',
+            // eslint-disable-next-line 
             templateContent: env.HTML_TEMPLATE(env)
         }));
     }
@@ -98,11 +99,13 @@ const baseConfig = (environnement, definedVariables) => {
             uglifyOptions: {
                 warnings: false,
                 compress: {
+                    /* eslint-disable camelcase */
                     drop_console: env.DROP_CONSOLE,
                     drop_debugger: true,
                     passes: 2,
                     keep_infinity: true,
                     ecma: env.ECMA_MODE
+                    /*eslint-enable camelcase */
                 },
                 output: {
                     ecma: env.ECMA_MODE

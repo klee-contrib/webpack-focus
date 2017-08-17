@@ -45,8 +45,9 @@ const tsConfig = (environnement, definedVariables) => {
     config.addComplexLoader(30, cssLoaderBuilder(parsedEnv, cssOptions, false, true));
     config.addComplexLoader(40, cssLoaderBuilder(parsedEnv, {}, true, false));
 
-    config.addPlugin(90, new ForkTsCheckerWebpackPlugin({
-        tslint: true
+    config.addPlugin(90, env => new ForkTsCheckerWebpackPlugin({
+        tslint: true,
+        async: env.HOT_RELOAD
     }));
 
     return config;
