@@ -118,12 +118,6 @@ const baseConfig = (environnement, definedVariables) => {
     config.addPlugin(70, new WatchMissingNodeModulesPlugin(path.join(process.cwd(), 'node_modules')));
     config.addPlugin(80, new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 
-
-    // Not working well
-    // if (!parsedEnv.DEV) {
-    //     config.addPlugin(90, new webpack.IgnorePlugin(/focus-devtools/));
-    // }
-
     if (parsedEnv.ANALYZE) {
         config.addPlugin(100, new BundleAnalyzerPlugin());
     }
@@ -188,8 +182,13 @@ const baseConfig = (environnement, definedVariables) => {
                 presets: ['babel-preset-focus']
             }
         }],
-        exclude: { and: [/node_modules/, { not: [/focus-components/] }] } // FIXME for now, change /focus-*/ to /focus-components/
+        exclude: { and: [/node_modules/, { not: [/focus-components/, /focus-core/] }] } // FIXME for now, change /focus-*/ to /focus-components/
     });
+
+    // Ignoring devtools if not DEV
+    if (!parsedEnv.DEV) {
+        config.addSimpleLoader(25, /focus-devtools/, 'null-loader');
+    }
 
     // Loader pour le SASS (Extraction du fichier JS, vers un fichier CSS indépendant, cf plugin)
     config.addComplexLoader(30, cssLoaderBuilder(parsedEnv));
