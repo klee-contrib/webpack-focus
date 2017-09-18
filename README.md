@@ -5,25 +5,49 @@ Standard Webpack preset for Focus compliant projects. It relies on environment v
 To configure this, a good option is to use [better-npm-run]( https://www.npmjs.com/package/better-npm-run). It will run npm script with environment variables.
 
 ## Environment variables
-
-- `DEV` (default `true`): Flag to mark the development state. Exposed globally through the variable `__DEV__`
-- `HOT_RELOAD` (default `false`): Flag to disable hot reload, even in DEV
+### Dev server variables
+- `DEV_SERVER_PROTOCOL` (default `'http'`) : webpack dev server protocol
 - `DEV_SERVER_HOST` (default `'localhost'`): webpack dev server hostname
 - `DEV_SERVER_PORT` (default `3000`): webpack dev server port
-- `API_HOST` (default `'localhost'`): API hostname
-- `API_PORT` (default `8080`): API port
-- `ENTRY_FILE_PATH` (default `'./src'`): project entry file path, that is to say the file launching the app
-- `OUTPUT_FILE_NAME` (default `'your-project-name'`): project file name
-- `OUTPUT_PUBLIC_PATH` : Path from the CSS file to the ressources folder, for resolving fonts, images, ...
-- `OUTPUT_DIR` (default `'./dir'`): output directory
-- `PAGE_TITLE` (default `'You project landing page'`): webpack dev server page title
-- `ANCHOR_CLASS` (default `'your-project'`): class used to anchor the `ReactDOM.render`. Exposed globally through the variable `__ANCHOR_CLASS__`
 - `PUBLIC_PATH` (default `'/'`): path to the built files on the webpack dev server
+- `PAGE_TITLE` (default `'You project landing page'`): webpack dev server page title
 - `GENERATE_HTML` (default `false`): automatically generate the `index.html`
-- `MINIMIFY` (default `false`): minimify the sources
-- `NODE_ENV` (default `dev`): If the environnement is developpement, or production (use `production` for recette or production)
-- `SOURCE_MAPS` (default= `true`): Toggles source maps generation
+
+### Output variables
+- `OUTPUT_DIR` (default `'./dir'`): output directory
+- `OUTPUT_PUBLIC_PATH` : Path from the CSS file to the ressources folder, for resolving fonts, images, ... (should be `'/'`
+, or `/assets/` ...)
 - `USE_VERSION` (default= `false`): If the version should be used in file name generated, for js et css (`[project_name].[project_version].js`,`[project_name].[project_version].css`)
+
+### Output options
+- `DEV` (default `true`): Flag to mark the development state. Exposed globally through the variable `__DEV__` (needed for devtools)
+- `HOT_RELOAD` (default `false`): Flag to disable hot reload, even in DEV
+- `MINIMIFY` (default `false`): minimify the sources
+- `NODE_ENV` (default `developpement`): If the environnement is developpement, or production (use `production` for recette or production). Should always be set
+- `SOURCE_MAPS` (default= `true`): Toggles source maps generation
+- `LEGACY_EXPORTS` (default= `'false'`): Output exports to legacy module.exports and not to ES6 export
+- `LEGACY_LODASH` (default= `'false'`): Disable lodash transformation to more precise import (for example `import {toPairs} from 'lodash'`, transformed to `import toPairs from 'lodash/toPairs'`)
+- `USE_POLYFILL` (default= `true`): If babel polyfill should be added to entries.
+- `DROP_CONSOLE` (default= `false`): If console statement should be dropped when MINIMIFY
+- `CHUNK_FILE_NAME` (default= `'chunks/[name]_[hash].[ext]'`): Chunk file naming
+- `ECMA_MODE` (default= `'5'`): Output mode for Uglify
+
+### Miscellaneous
+- `ENTRY_FILE_PATH` (default `'./src'`): project entry file path, that is to say the file launching the app
+- `ANCHOR_CLASS` (default `'your-project'`): class used to anchor the `ReactDOM.render`. Exposed globally through the variable `__ANCHOR_CLASS__`
+- `BROWERS` (default: `'>1%|last 4 versions|Firefox ESR|not ie < 9'`): Browser query for Babel preset and PostCss
+- `ASSET_LIMIT` (default: `'10000'`): Size threshold in bytes to include in base64 in css
+- `ANALYZE` (default `'./Webpack'`): Use webpack bundle analyzer to see details about bundle
+
+### LEGACY (API_ROOT and BASE_URL are better defined as externals inside a <script> in your html)
+- `API_PROTOCOL` (default `'http'`): Protocol for API
+- `API_HOST` (default `'localhost'`): Default host for API
+- `API_PORT` (default `'8080'`): Default port for API
+- `API_SUBDOMAIN` (default `''`): Default subdomain for API
+- `API_ROOT` (default `${API_PROTOCOL}://${API_HOST}:${API_PORT}/${API_SUBDOMAIN}`): Root URL for API
+- `BASE_URL` (default `''`): Default root url for navigate and link
+- `LOCAL_FOCUS` (default `'false'`): Env variable to use a local focus. Better user webpack alias directly
+- `LEGACY_SEARCH_API` (default `'false'`): If the legacy search API should be used
 
 ## Webpack configuration builder
 
