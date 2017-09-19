@@ -1,13 +1,13 @@
 {
     "name": "webpack-focus",
-    "version": "1.0.0-beta3",
+    "version": "1.0.0-beta4",
     "description": "Focus webpack config",
     "main": "./index.js",
     "bin": {
         "focus-dev-server": "./launcher.js"
     },
     "scripts": {
-        "prepare": "npm run build",
+        "prepublishOnly": "npm run build",
         "build": "better-npm-run build"
     },
     "betterScripts": {
