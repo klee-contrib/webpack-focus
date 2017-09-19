@@ -172,16 +172,23 @@ const baseConfig = (environnement, definedVariables) => {
     //         workers: Math.max(cpus().length - 2, 1)
     //     }
     // }
-
     config.addComplexLoader(20, {
         test: /\.(js|jsx)$/,
-        use: ['cache-loader', {
-            loader: 'babel-loader',
-            options: {
-                cacheDirectory: false,
-                presets: ['babel-preset-focus']
+        use: [
+            {
+                loader: 'cache-loader',
+                options: {
+                    cacheIdentifier: `cache-loader:{version} {process.env.NODE_ENV} ${'' + parsedEnv.LEGACY_EXPORTS} ${'' + parsedEnv.HOT_RELOAD} ${'' + parsedEnv.LEGACY_LODASH} ${parsedEnv.BROWERS}`
+                }
+            },
+            {
+                loader: 'babel-loader',
+                options: {
+                    cacheDirectory: false,
+                    presets: ['babel-preset-focus']
+                }
             }
-        }],
+        ],
         exclude: { and: [/node_modules/, { not: [/focus-components/, /focus-core/] }] } // FIXME for now, change /focus-*/ to /focus-components/
     });
 
