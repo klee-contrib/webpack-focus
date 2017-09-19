@@ -378,10 +378,9 @@ class ConfigBuilder {
                 warnings: true
             }
         };
-        if (this.sourceMaps) {
-            config.devtool = env.MINIMIFY ? 'source-map' : 'eval-source-map';
 
-        }
+        config.devtool = this.sourceMaps && env.MINIMIFY ? 'source-map' : this.sourceMaps ? 'eval-source-map' : false;
+
         return config;
     }
 
