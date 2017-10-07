@@ -10,6 +10,11 @@
         "prepublishOnly": "npm run build",
         "build": "better-npm-run build"
     },
+    "babel": {
+        "presets": [
+            "focus"
+        ]
+    },
     "betterScripts": {
         "build": {
             "command": "babel src/ --out-dir .",
