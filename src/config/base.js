@@ -59,7 +59,8 @@ const baseConfig = (environnement, definedVariables) => {
     if (parsedEnv.HOT_RELOAD) {
         config.addDefinedVariable('__DEV_SERVER_PROTOCOL__', JSON.stringify(parsedEnv.DEV_SERVER_PROTOCOL));
         config.addDefinedVariable('__DEV_SERVER_HOST__', JSON.stringify(parsedEnv.DEV_SERVER_HOST));
-        config.addDefinedVariable('__DEV_SERVER_PORT__', JSON.stringify(parsedEnv.DEV_SERVER_PORT))
+        config.addDefinedVariable('__DEV_SERVER_PORT__', JSON.stringify(parsedEnv.DEV_SERVER_PORT));
+        config.addDefinedVariable('__DEV_SERVER_SUBDOMAIN__', JSON.stringify(parsedEnv.DEV_SERVER_SUBDOMAIN))
     }
     config.addDefinedVariable('__DEV__', parsedEnv.DEV ? 'true' : 'false');
     config.addDefinedVariable('__HOT_RELOAD__', parsedEnv.HOT_RELOAD ? 'true' : 'false')

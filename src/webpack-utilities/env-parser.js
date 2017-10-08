@@ -3,6 +3,7 @@ const defaultEnv = {
     DEV_SERVER_PROTOCOL: 'http', // Dev server protocol
     DEV_SERVER_HOST: 'localhost', // Dev server hostname
     DEV_SERVER_PORT: 3000, // Dev server port
+    DEV_SERVER_SUBDOMAIN: '', // Dev server subdomain
     ENTRY_FILE_PATH: './src', // Entry file to build the application
     // eslint-disable-next-line camelcase
     npm_package_name: 'your-project', // Project name, automatically set by npm
@@ -58,7 +59,7 @@ const envParser = (env) => {
     newEnv.LEGACY_EXPORTS = JSON.parse(newEnv.LEGACY_EXPORTS);
     newEnv.ECMA_MODE = +JSON.parse(newEnv.ECMA_MODE);
 
-    newEnv.OUTPUT_PUBLIC_PATH = !newEnv.HOT_RELOAD ? newEnv.OUTPUT_PUBLIC_PATH : `${newEnv.DEV_SERVER_PROTOCOL}://${newEnv.DEV_SERVER_HOST}:${newEnv.DEV_SERVER_PORT}/`;
+    newEnv.OUTPUT_PUBLIC_PATH = !newEnv.HOT_RELOAD ? newEnv.OUTPUT_PUBLIC_PATH : `${newEnv.DEV_SERVER_PROTOCOL}://${newEnv.DEV_SERVER_HOST}:${newEnv.DEV_SERVER_PORT}/${newEnv.DEV_SERVER_SUBDOMAIN}`;
 
     newEnv.HTML_TEMPLATE = defaultHtmlTemplate;
     return newEnv;
