@@ -28,7 +28,7 @@ const defaultEnv = {
     LEGACY_EXPORTS: 'false', // Output exports to legacy module.exports
     ECMA_MODE: '5', // Output mode for Uglify
     BROWERS: '>1%|last 4 versions|Firefox ESR|not ie < 9', // Browser query for Babel preset and PostCss
-    CHUNK_FILE_NAME: 'chunks/[name]_[hash].[ext]'
+    CHUNK_FILE_NAME: 'chunks/[name]_[hash].js'
 }
 
 const defaultHtmlTemplate = (env) => (`<html>
