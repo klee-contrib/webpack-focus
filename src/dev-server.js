@@ -9,20 +9,12 @@ import chalk from 'chalk';
 
 import clearConsole from 'react-dev-utils/clearConsole';
 import { choosePort, createCompiler, prepareUrls } from 'react-dev-utils/WebpackDevServerUtils';
-// Environment settings
-const {
-    OUTPUT_DIR = './dist',              // Output directory
-    DEV_SERVER_PROTOCOL = 'http',       // Dev server hostname
-    DEV_SERVER_HOST = 'localhost',      // Dev server hostname
-    DEV_SERVER_PORT = 3000,             // Dev server port
-    API_PROTOCOL = 'http',              // API protocol
-    API_HOST = 'localhost',             // API hostname
-    API_PORT = 8080,                    // API port
-    API_SUBDOMAIN = '',                 // API subdomain
-    PUBLIC_PATH = '/'                   // Output public path
-} = process.env;
 
-const API_ROOT = process.env.API_ROOT ? process.env.API_ROOT : `${API_PROTOCOL}://${API_HOST}:${API_PORT}/${API_SUBDOMAIN}`;
+import envParser from './webpack-utilities/env-parser';
+
+// Environment settings
+const parsedEnv = envParser(process.env);
+const { OUTPUT_DIR, DEV_SERVER_PROTOCOL, DEV_SERVER_HOST, DEV_SERVER_PORT, OUTPUT_PUBLIC_PATH, npm_package_name } = parsedEnv;
 
 /*****************************************
 ********* Webpack dev server *************
@@ -30,7 +22,7 @@ const API_ROOT = process.env.API_ROOT ? process.env.API_ROOT : `${API_PROTOCOL}:
 const isInteractive = process.stdout.isTTY;
 
 const defaultServerConfig = {
-    publicPath: PUBLIC_PATH,
+    publicPath: OUTPUT_PUBLIC_PATH, // see https://webpack.js.org/configuration/dev-server/#devserver-publicpath-
     hot: true,
     watchOptions: {
         ignored: /node_modules/
@@ -73,11 +65,9 @@ export const serverLauncher = (webpackConfig, serverConfig = {}) => {
                 return;
             }
 
-            const protocol = DEV_SERVER_PROTOCOL;
-            //const appName = require(paths.appPackageJson).name;
-            const urls = prepareUrls(protocol, DEV_SERVER_HOST, port);
+            const urls = prepareUrls(DEV_SERVER_PROTOCOL, DEV_SERVER_HOST, port);
             // Create a webpack compiler that is configured with custom messages.
-            const compiler = createCompiler(webpack, webpackConfig, 'FOCUS App', urls, false);
+            const compiler = createCompiler(webpack, webpackConfig, npm_package_name, urls, false);
 
             const devServer = new WebpackDevServer(compiler, defaultsDeep(serverConfig, defaultServerConfig));
             // Launch WebpackDevServer.
@@ -88,7 +78,7 @@ export const serverLauncher = (webpackConfig, serverConfig = {}) => {
                 if (isInteractive) {
                     clearConsole();
                 }
-                console.log(chalk.cyan('Starting the development server at %s:%s...\n'), DEV_SERVER_HOST, DEV_SERVER_PORT);
+                console.log(chalk.cyan('Starting the development server at %s:%s...\n'), DEV_SERVER_HOST, port);
                 // openBrowser(urls.localUrlForBrowser);
             });
 
