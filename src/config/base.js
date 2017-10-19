@@ -15,7 +15,7 @@ import cssLoaderBuilder from '../webpack-utilities/css-loader-builder';
 
 /**
  * Builder for basic configuration
- * 
+ *
  * @param {object} environnement env variable
  * @param {object} definedVariables  variables to be defined at compiled time by webpack
  * @returns {any} a instance of config builder class
@@ -33,6 +33,7 @@ const baseConfig = (environnement, definedVariables) => {
     // Ajout du point d'entrée pour le polyfill
     if (parsedEnv.USE_POLYFILL) {
         config.addEntry('babel-polyfill');
+        config.addEntry('whatwg-fetch');
     }
 
     // Ajout des points d'entrée pour le hot reload
@@ -99,7 +100,7 @@ const baseConfig = (environnement, definedVariables) => {
     if (parsedEnv.GENERATE_HTML) {
         config.addPlugin(40, env => new HtmlWebpackPlugin({
             inject: 'body',
-            // eslint-disable-next-line 
+            // eslint-disable-next-line
             templateContent: env.HTML_TEMPLATE(env)
         }));
     }
