@@ -1,6 +1,6 @@
 {
     "name": "webpack-focus",
-    "version": "1.0.0-beta5",
+    "version": "1.0.0-beta6",
     "description": "Focus webpack config",
     "main": "./index.js",
     "bin": {
@@ -39,7 +39,7 @@
         "autoprefixer": "7.1.6",
         "babel-loader": "7.1.2",
         "babel-polyfill": "6.26.0",
-        "babel-preset-focus": "1.0.0-beta1",
+        "babel-preset-focus": "1.0.0",
         "cache-loader": "1.1.0",
         "case-sensitive-paths-webpack-plugin": "2.1.1",
         "css-loader": "0.28.7",
@@ -64,7 +64,7 @@
         "source-map-loader": "0.2.3",
         "style-loader": "0.19.0",
         "thread-loader": "1.1.2",
-        "ts-loader": "3.1.0",
+        "ts-loader": "3.1.1",
         "uglifyjs-webpack-plugin": "1.0.1",
         "url-loader": "0.6.2",
         "webpack": "3.8.1",
