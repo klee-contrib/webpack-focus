@@ -1,6 +1,6 @@
 import webpack from 'webpack';
 import path from 'path';
-// import { cpus } from 'os';
+import { cpus } from 'os';
 
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
@@ -15,7 +15,7 @@ import cssLoaderBuilder from '../webpack-utilities/css-loader-builder';
 
 /**
  * Builder for basic configuration
- * 
+ *
  * @param {object} environnement env variable
  * @param {object} definedVariables  variables to be defined at compiled time by webpack
  * @returns {any} a instance of config builder class
@@ -33,6 +33,7 @@ const baseConfig = (environnement, definedVariables) => {
     // Ajout du point d'entrée pour le polyfill
     if (parsedEnv.USE_POLYFILL) {
         config.addEntry('babel-polyfill');
+        config.addEntry('whatwg-fetch');
     }
 
     // Ajout des points d'entrée pour le hot reload
@@ -99,7 +100,7 @@ const baseConfig = (environnement, definedVariables) => {
     if (parsedEnv.GENERATE_HTML) {
         config.addPlugin(40, env => new HtmlWebpackPlugin({
             inject: 'body',
-            // eslint-disable-next-line 
+            // eslint-disable-next-line
             templateContent: env.HTML_TEMPLATE(env)
         }));
     }
@@ -179,30 +180,38 @@ const baseConfig = (environnement, definedVariables) => {
     }))
 
     // Loader pour Babel (transpile ES6 => ES5, exclude des node_modules, attendus en ES5)
-    // {
-    //     loader: 'thread-loader',
-    //     options: {
-    //         // Let's leave 2 cpus free, for plugins, OS, ...
-    //         workers: Math.max(cpus().length - 2, 1)
-    //     }
     // }
+    const babelLoaders = [];
+    if (parsedEnv.PARALLEL_BUILD) {
+        babelLoaders.push({
+            loader: 'thread-loader',
+            options: {
+                // Let's leave 2 cpus free, for plugins, OS, ...
+                workers: Math.max(cpus().length - 2, 1)
+            }
+        });
+    }
+
+    if (parsedEnv.USE_CACHE) {
+        babelLoaders.push({
+            loader: 'cache-loader',
+            options: {
+                cacheIdentifier: `cache-loader:{version} {process.env.NODE_ENV} ${'' + parsedEnv.LEGACY_EXPORTS} ${'' + parsedEnv.HOT_RELOAD} ${'' + parsedEnv.LEGACY_LODASH} ${parsedEnv.BROWERS}`
+            }
+        });
+    }
+
+    babelLoaders.push({
+        loader: 'babel-loader',
+        options: {
+            cacheDirectory: false,
+            presets: ['babel-preset-focus']
+        }
+    });
+
     config.addComplexLoader(20, {
         test: /\.(js|jsx)$/,
-        use: [
-            {
-                loader: 'cache-loader',
-                options: {
-                    cacheIdentifier: `cache-loader:{version} {process.env.NODE_ENV} ${'' + parsedEnv.LEGACY_EXPORTS} ${'' + parsedEnv.HOT_RELOAD} ${'' + parsedEnv.LEGACY_LODASH} ${parsedEnv.BROWERS}`
-                }
-            },
-            {
-                loader: 'babel-loader',
-                options: {
-                    cacheDirectory: false,
-                    presets: ['babel-preset-focus']
-                }
-            }
-        ],
+        use: babelLoaders,
         exclude: { and: [/node_modules/, { not: [/focus-components/, /focus-core/] }] } // FIXME for now, change /focus-*/ to /focus-components/
     });
 
