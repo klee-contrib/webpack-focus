@@ -16,8 +16,7 @@ const tsConfig = (environnement, definedVariables) => {
         babelLoader.use.push({
             loader: 'ts-loader',
             options: {
-                transpileOnly: true, // Leave type checking to plugin
-                sourceMap: env.SOURCE_MAPS
+                transpileOnly: true // Leave type checking to plugin
             }
         });
         return babelLoader;
