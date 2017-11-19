@@ -30,7 +30,8 @@ const defaultEnv = {
     BROWERS: '>1%|last 4 versions|Firefox ESR|not ie < 9', // Browser query for Babel preset and PostCss
     CHUNK_FILE_NAME: 'chunks/[name]_[hash].js',
     USE_CACHE: 'true',
-    PARALLEL_BUILD: 'false'
+    PARALLEL_BUILD: 'false',
+    IS_VERTIGO: 'false'
 }
 
 const defaultHtmlTemplate = (env) => (`<html>
@@ -62,6 +63,7 @@ const envParser = (env) => {
     newEnv.ECMA_MODE = +JSON.parse(newEnv.ECMA_MODE);
     newEnv.USE_CACHE = JSON.parse(newEnv.USE_CACHE);
     newEnv.PARALLEL_BUILD = JSON.parse(newEnv.PARALLEL_BUILD);
+    newEnv.IS_VERTIGO = JSON.parse(newEnv.IS_VERTIGO);
 
     newEnv.OUTPUT_PUBLIC_PATH = !newEnv.HOT_RELOAD ? newEnv.OUTPUT_PUBLIC_PATH : `${newEnv.DEV_SERVER_PROTOCOL}://${newEnv.DEV_SERVER_HOST}:${newEnv.DEV_SERVER_PORT}/${newEnv.DEV_SERVER_SUBDOMAIN}`;
 
