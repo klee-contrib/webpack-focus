@@ -26,7 +26,7 @@ To configure this, a good option is to use [better-npm-run]( https://www.npmjs.c
 - `DEV` (default `true`): Flag to mark the development state. Exposed globally through the variable `__DEV__` (needed for devtools)
 - `HOT_RELOAD` (default `false`): Flag to disable hot reload, even in DEV
 - `MINIMIFY` (default `false`): minimify the sources
-- `NODE_ENV` (default `developement`): If the environnement is developpement, or production (use `production` for recette or production). Should always be set
+- `NODE_ENV` (default `development`): If the environnement is developpement, or production (use `production` for recette or production). Should always be set
 - `SOURCE_MAPS` (default= `true`): Toggles source maps generation
 - `LEGACY_EXPORTS` (default= `'false'`): Output exports to legacy module.exports and not to ES6 export
 - `LEGACY_LODASH` (default= `'false'`): Disable lodash transformation to more precise import (for example `import {toPairs} from 'lodash'`, transformed to `import toPairs from 'lodash/toPairs'`)
@@ -155,7 +155,7 @@ The other generated file name contain a hash, for the same purpose.
                 "OUTPUT_PUBLIC_PATH": "./",
                 "USE_VERSION": "true",
                 "DEV": "true",
-                "NODE_ENV": "developement",
+                "NODE_ENV": "development",
                 "HOT_RELOAD": "false",
                 "SOURCE_MAPS": "false"
             }
@@ -165,7 +165,7 @@ The other generated file name contain a hash, for the same purpose.
             "env": {
                 "ENTRY_FILE_PATH": "./app",
                 "DEV_SERVER_SUBDOMAIN":"AtlasFrontEnd/",
-                "NODE_ENV": "developement",
+                "NODE_ENV": "development",
                 "HOT_RELOAD": "true",
                 "GENERATE_HTML": "true"
             }
