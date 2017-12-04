@@ -8,6 +8,8 @@ import envParser from '../webpack-utilities/env-parser';
 const tsConfig = (environnement, definedVariables) => {
     const config = baseConfig(environnement, definedVariables);
     const parsedEnv = envParser(environnement);
+    
+    config.addExtension(['.ts', '.tsx']);
 
     const babelLoader = config.removeLoader(20);
     babelLoader.test = /\.(ts|tsx)$/;
