@@ -2,7 +2,7 @@ const defaultEnv = {
     DEV: 'true', // Toggles the hot reloading
     DEV_SERVER_PROTOCOL: 'http', // Dev server protocol
     DEV_SERVER_HOST: 'localhost', // Dev server hostname
-    DEV_SERVER_PORT: 3000, // Dev server port
+    DEV_SERVER_PORT: '3000', // Dev server port
     DEV_SERVER_SUBDOMAIN: '', // Dev server subdomain
     ENTRY_FILE_PATH: './src', // Entry file to build the application
     // eslint-disable-next-line camelcase
@@ -30,7 +30,8 @@ const defaultEnv = {
     BROWERS: '>1%|last 4 versions|Firefox ESR|not ie < 9', // Browser query for Babel preset and PostCss
     CHUNK_FILE_NAME: 'chunks/[name]_[hash].js',
     USE_CACHE: 'true',
-    PARALLEL_BUILD: 'false'
+    PARALLEL_BUILD: 'false',
+    IS_VERTIGO: 'false'
 }
 
 const defaultHtmlTemplate = (env) => (`<html>
@@ -62,6 +63,8 @@ const envParser = (env) => {
     newEnv.ECMA_MODE = +JSON.parse(newEnv.ECMA_MODE);
     newEnv.USE_CACHE = JSON.parse(newEnv.USE_CACHE);
     newEnv.PARALLEL_BUILD = JSON.parse(newEnv.PARALLEL_BUILD);
+    newEnv.IS_VERTIGO = JSON.parse(newEnv.IS_VERTIGO);
+    newEnv.DEV_SERVER_PORT = +JSON.parse(newEnv.DEV_SERVER_PORT);
 
     newEnv.OUTPUT_PUBLIC_PATH = !newEnv.HOT_RELOAD ? newEnv.OUTPUT_PUBLIC_PATH : `${newEnv.DEV_SERVER_PROTOCOL}://${newEnv.DEV_SERVER_HOST}:${newEnv.DEV_SERVER_PORT}/${newEnv.DEV_SERVER_SUBDOMAIN}`;
 

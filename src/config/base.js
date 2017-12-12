@@ -64,7 +64,8 @@ const baseConfig = (environnement, definedVariables) => {
         config.addDefinedVariable('__DEV_SERVER_SUBDOMAIN__', JSON.stringify(parsedEnv.DEV_SERVER_SUBDOMAIN))
     }
     config.addDefinedVariable('__DEV__', parsedEnv.DEV ? 'true' : 'false');
-    config.addDefinedVariable('__HOT_RELOAD__', parsedEnv.HOT_RELOAD ? 'true' : 'false')
+    config.addDefinedVariable('__HOT_RELOAD__', parsedEnv.HOT_RELOAD ? 'true' : 'false');
+    config.addDefinedVariable('__IS_VERTIGO__', parsedEnv.IS_VERTIGO ? 'true' : 'false');
     config.addDefinedVariable('__ANCHOR_CLASS__', JSON.stringify(parsedEnv.ANCHOR_CLASS));
     config.addDefinedVariable('__PACKAGE_JSON_PATH__', JSON.stringify(parsedEnv.PACKAGE_JSON_PATH));
     // config.addDefinedVariable('__USER__', JSON.stringify(USER));
