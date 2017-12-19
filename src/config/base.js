@@ -34,7 +34,10 @@ const baseConfig = (environnement, definedVariables) => {
     if (parsedEnv.USE_POLYFILL) {
         config.addEntry('babel-polyfill');
         config.addEntry('whatwg-fetch');
+        config.addEntry('classlist-polyfill');
     }
+
+    config.addEntry('normalize.css');
 
     // Ajout des points d'entrée pour le hot reload
     if (parsedEnv.HOT_RELOAD) {
