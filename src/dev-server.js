@@ -1,47 +1,54 @@
-import path from 'path';
-import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
-import defaultsDeep from 'lodash/defaultsDeep';
-import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
-import noopServiceWorkerMiddleware from 'react-dev-utils/noopServiceWorkerMiddleware';
+import path from "path";
+import webpack from "webpack";
+import WebpackDevServer from "webpack-dev-server";
 
-import chalk from 'chalk';
+import errorOverlayMiddleware from "react-dev-utils/errorOverlayMiddleware";
+import evalSourceMapMiddleware from "react-dev-utils/evalSourceMapMiddleware";
+import noopServiceWorkerMiddleware from "react-dev-utils/noopServiceWorkerMiddleware";
+import clearConsole from "react-dev-utils/clearConsole";
+import { choosePort, createCompiler, prepareUrls } from "react-dev-utils/WebpackDevServerUtils";
 
-import clearConsole from 'react-dev-utils/clearConsole';
-import { choosePort, createCompiler, prepareUrls } from 'react-dev-utils/WebpackDevServerUtils';
+import chalk from "chalk";
+import defaultsDeep from "lodash/defaultsDeep";
 
-import envParser from './webpack-utilities/env-parser';
+import envParser from "./webpack-utilities/env-parser";
 
 // Environment settings
 const parsedEnv = envParser(process.env);
-const { OUTPUT_DIR, DEV_SERVER_PROTOCOL, DEV_SERVER_HOST, DEV_SERVER_PORT, OUTPUT_PUBLIC_PATH, npm_package_name } = parsedEnv;
+const {
+    OUTPUT_DIR,
+    DEV_SERVER_PROTOCOL,
+    DEV_SERVER_HOST,
+    DEV_SERVER_PORT,
+    OUTPUT_PUBLIC_PATH,
+    npm_package_name
+} = parsedEnv;
 
 /*****************************************
-********* Webpack dev server *************
-******************************************/
+ ********* Webpack dev server *************
+ ******************************************/
 const isInteractive = process.stdout.isTTY;
 
 const defaultServerConfig = {
     publicPath: OUTPUT_PUBLIC_PATH, // see https://webpack.js.org/configuration/dev-server/#devserver-publicpath-
     hot: true,
-    watchOptions: {
-        ignored: /node_modules/
-    },
-    clientLogLevel: 'info',
+    clientLogLevel: "none",
+    // Enable gzip compression of generated files.
+    compress: true,
     watchContentBase: true,
     quiet: true,
     overlay: false,
-
+    https: DEV_SERVER_PROTOCOL === "https",
     historyApiFallback: true,
     contentBase: path.resolve(process.cwd(), OUTPUT_DIR),
-    // By default, proxy all request different from built files, to the API
-    proxy: {
-        // '**': API_ROOT
-    },
+    proxy: {},
     headers: {
-        'Access-Control-Allow-Origin': '*'
+        "Access-Control-Allow-Origin": "*"
     },
-    setup(app) {
+    // By default, proxy all request different from built files, to the API
+    before(app, server) {
+        // This lets us fetch source contents from webpack for the error overlay
+        app.use(evalSourceMapMiddleware(server));
         // This lets us open files from the runtime error overlay.
         app.use(errorOverlayMiddleware());
         // This service worker file is effectively a 'no-op' that will reset any
@@ -51,14 +58,12 @@ const defaultServerConfig = {
         // https://github.com/facebookincubator/create-react-app/issues/2272#issuecomment-302832432
         app.use(noopServiceWorkerMiddleware());
     }
-
 };
-
 
 export const serverLauncher = (webpackConfig, serverConfig = {}) => {
     // We attempt to use the default port but if it is busy, we offer the user to
     // run on a different port. `detect()` Promise resolves to the next free port.
-    choosePort(DEV_SERVER_HOST, DEV_SERVER_PORT)
+    choosePort(DEV_SERVER_HOST, +DEV_SERVER_PORT)
         .then(port => {
             if (port === null) {
                 // We have not found a port.
@@ -78,11 +83,10 @@ export const serverLauncher = (webpackConfig, serverConfig = {}) => {
                 if (isInteractive) {
                     clearConsole();
                 }
-                console.log(chalk.cyan('Starting the development server at %s:%s...\n'), DEV_SERVER_HOST, port);
-                // openBrowser(urls.localUrlForBrowser);
+                console.log(chalk.cyan("Starting the development server at %s:%s...\n"), DEV_SERVER_HOST, port);
             });
 
-            ['SIGINT', 'SIGTERM'].forEach((sig) => {
+            ["SIGINT", "SIGTERM"].forEach(sig => {
                 process.on(sig, () => {
                     devServer.close();
                     process.exit();

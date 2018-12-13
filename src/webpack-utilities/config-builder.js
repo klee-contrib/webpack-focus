@@ -1,8 +1,7 @@
-import path from 'path';
-import defaultsDeep from 'lodash/defaultsDeep';
+import path from "path";
+import defaultsDeep from "lodash/defaultsDeep";
 
-const entryError =
-    `Le point d'entrée correspond au point d'entrée dans la SPA,
+const entryError = `Le point d'entrée correspond au point d'entrée dans la SPA,
 le paramètre devrait être une chaine de caractère correspondant au fichier de lancement de l'application, ou à son dossier si c'est un index.js
 Par exemple (et par défaut) path.resolve(process.cwd(), './src'), càd le dossier src du dossier courant`;
 
@@ -21,7 +20,7 @@ class ConfigBuilder {
     stats = {};
     plugins = [];
     loaders = [];
-    extensions = ['.js', '.jsx'];
+    extensions = [".js", ".jsx"];
     rules = [];
     debugConfig = false;
     sourceMaps = false;
@@ -32,9 +31,9 @@ class ConfigBuilder {
 
     _debugInfo() {
         if (this.debugConfig) {
-            console.log('########################################################################');
+            console.log("########################################################################");
             console.log(arguments);
-            console.log('########################################################################');
+            console.log("########################################################################");
             console.log();
         }
     }
@@ -48,10 +47,10 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     addEntry(entry) {
-        this._debugInfo('addEntry', [...arguments]);
+        this._debugInfo("addEntry", [...arguments]);
         if (Array.isArray(entry)) {
             this.entries.push(...entry);
-        } else if (typeof (entry) === 'string') {
+        } else if (typeof entry === "string") {
             this.entries.push(entry);
         } else {
             throw new Error(entryError);
@@ -68,10 +67,9 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     setOuputPath(outPath, isRelative = true) {
-        this._debugInfo('setOuputPath', [...arguments]);
+        this._debugInfo("setOuputPath", [...arguments]);
         this.output.path = isRelative ? path.resolve(process.cwd(), outPath) : outPath;
     }
-
 
     /**
      * Ajoute un alias pour la résolution des sources (ex: test focus, etc).
@@ -84,7 +82,7 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     addAlias(aliasName, aliasPath, isRelative = true) {
-        this._debugInfo('addAlias', [...arguments]);
+        this._debugInfo("addAlias", [...arguments]);
         this.aliases[aliasName] = isRelative ? path.resolve(process.cwd(), aliasPath) : aliasPath;
     }
 
@@ -97,7 +95,7 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     setAssetsPublicPath(path) {
-        this._debugInfo('setAssetsPublicPath', [...arguments]);
+        this._debugInfo("setAssetsPublicPath", [...arguments]);
         this.output.publicPath = path;
     }
 
@@ -106,7 +104,7 @@ class ConfigBuilder {
      * @param {string} name
      */
     setChunkFileName(name) {
-        this._debugInfo('setChunkFileName', [...arguments]);
+        this._debugInfo("setChunkFileName", [...arguments]);
         this.output.chunkFilename = name;
     }
 
@@ -120,9 +118,9 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     setFilename(name) {
-        this._debugInfo('setFilename', [...arguments]);
+        this._debugInfo("setFilename", [...arguments]);
         this.projectName = name;
-        this.output.filename = this.projectName + '.js';
+        this.output.filename = this.projectName + ".js";
     }
 
     /**
@@ -134,13 +132,13 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     addExtension(extension) {
-        this._debugInfo('addExtension', [...arguments]);
+        this._debugInfo("addExtension", [...arguments]);
         if (Array.isArray(extension)) {
             this.extensions.push(...extension);
-        } else if (typeof (extension) === 'string') {
+        } else if (typeof extension === "string") {
             this.extensions.push(extension);
         } else {
-            throw new Error('Une extension est soit une chaine de caractère, soit tableau de chaine de caractère');
+            throw new Error("Une extension est soit une chaine de caractère, soit tableau de chaine de caractère");
         }
     }
 
@@ -158,12 +156,12 @@ class ConfigBuilder {
 
     _insertElt(orderedList, newElt) {
         if (this._getIndexElement(orderedList, newElt.ordre) !== -1) {
-            throw new Error('Un élément d\'ordre ' + newElt.ordre + ' existe déjà');
+            throw new Error("Un élément d'ordre " + newElt.ordre + " existe déjà");
         }
         const index = this._getInsertIndex(orderedList, newElt.ordre);
         if (index === -1) {
             // L'élément a l'ordre le plus grand
-            orderedList.push(newElt)
+            orderedList.push(newElt);
         } else {
             // Sinon, on injecte juste avant le plugin ayant un ordre plus élevé
             orderedList.splice(index, 0, newElt);
@@ -173,7 +171,7 @@ class ConfigBuilder {
     _removeElt(orderedList, ordre) {
         const index = this._getIndexElement(orderedList, ordre);
         if (index === -1) {
-            console.warn("Aucun élément d'ordre " + ordre + " n'existe, donc aucun élément n'a été retiré")
+            console.warn("Aucun élément d'ordre " + ordre + " n'existe, donc aucun élément n'a été retiré");
             return null;
         } else {
             return orderedList.splice(index, 1)[0];
@@ -190,10 +188,9 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     addPlugin(ordre, plugin) {
-        this._debugInfo('addPlugin', [...arguments]);
-        this._insertElt(this.plugins, { ordre, plugin })
+        this._debugInfo("addPlugin", [...arguments]);
+        this._insertElt(this.plugins, { ordre, plugin });
     }
-
 
     /**
      * Retire un plugin à la configuration webpack, à la position indiquée.
@@ -204,7 +201,7 @@ class ConfigBuilder {
      *
      */
     removePlugin(ordre) {
-        this._debugInfo('removePlugin', [...arguments]);
+        this._debugInfo("removePlugin", [...arguments]);
         return (this._removeElt(this.plugins, ordre) || {}).plugin;
     }
 
@@ -217,7 +214,7 @@ class ConfigBuilder {
      *
      */
     getPlugin(ordre) {
-        this._debugInfo('getPlugin', [...arguments]);
+        this._debugInfo("getPlugin", [...arguments]);
         return (this._getElement(this.plugins, ordre) || {}).plugin;
     }
 
@@ -236,15 +233,15 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     addSimpleLoader(ordre, test, loader, options = null, isPreloader = false) {
-        this._debugInfo('addSimpleLoader', [...arguments]);
+        this._debugInfo("addSimpleLoader", [...arguments]);
         const newLoader = { ordre, loader: { test, loader } };
         if (options !== null) {
             newLoader.loader.options = options;
         }
         if (isPreloader) {
-            newLoader.loader.enforce = 'pre';
+            newLoader.loader.enforce = "pre";
         }
-        this._insertElt(this.loaders, newLoader)
+        this._insertElt(this.loaders, newLoader);
     }
 
     /**
@@ -258,9 +255,9 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     addComplexLoader(ordre, rule) {
-        this._debugInfo('addComplexLoader', [...arguments]);
+        this._debugInfo("addComplexLoader", [...arguments]);
         const newLoader = { ordre, loader: rule };
-        this._insertElt(this.loaders, newLoader)
+        this._insertElt(this.loaders, newLoader);
     }
 
     /**
@@ -272,7 +269,7 @@ class ConfigBuilder {
      *
      */
     removeLoader(ordre) {
-        this._debugInfo('removeLoader', [...arguments]);
+        this._debugInfo("removeLoader", [...arguments]);
         return (this._removeElt(this.loaders, ordre) || {}).loader;
     }
 
@@ -285,7 +282,7 @@ class ConfigBuilder {
      *
      */
     getLoader(ordre) {
-        this._debugInfo('getLoader', [...arguments]);
+        this._debugInfo("getLoader", [...arguments]);
         return (this._getElement(this.loaders, ordre) || {}).loader;
     }
 
@@ -297,10 +294,9 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     useSourceMaps(useSourceMaps = false) {
-        this._debugInfo('useSourceMaps', [...arguments]);
+        this._debugInfo("useSourceMaps", [...arguments]);
         this.sourceMaps = useSourceMaps;
     }
-
 
     /**
      * Ajoute une variable qui sera définie par le plugin DefineVariable, et injectée (càd remplacée par sa valeur) par webpack.
@@ -334,7 +330,7 @@ class ConfigBuilder {
      * @memberOf ConfigBuilder
      */
     getCssFilename() {
-        return this.projectName + '.css';
+        return this.projectName + ".css";
     }
 
     /**
@@ -350,18 +346,44 @@ class ConfigBuilder {
         this.externals[key] = value;
     }
 
+    /**
+     * Define options used by optimization.
+     * @param {object} optimization Optimization options.
+     */
+    setOptimization(optimization) {
+        this.optimization = optimization;
+    }
+
+    /**
+     * Build configuration.
+     * @param {object} env Environment configuration.
+     * @returns {object} Configuration.
+     */
     _buildConfig(env) {
         const config = {
+            mode: env.NODE_ENV,
             entry: this.entries,
             output: this.output,
             resolve: {
                 extensions: this.extensions,
                 alias: this.aliases
             },
-            plugins: this.plugins.map(({ plugin }) => plugin).map(item => typeof (item) === 'function' ? item(env) : item),
+            plugins: this.plugins
+                .map(({ plugin }) => plugin)
+                .map(item => (typeof item === "function" ? item(env) : item)),
             module: {
-                rules: this.loaders.map(({ loader }) => loader).map(item => typeof (item) === 'function' ? item(env) : item)
+                rules: this.loaders
+                    .map(({ loader }) => loader)
+                    .map(item => (typeof item === "function" ? item(env) : item))
             },
+            optimization: {
+                minimize: this.optimization.minimize,
+                splitChunks: {
+                    chunks: this.optimization.splitChunks
+                },
+                minimizer: this.optimization.minimizer ? [this.optimization.minimizer] : []
+            },
+            bail: this.optimization.bail,
             externals: this.externals,
             stats: {
                 colors: true,
@@ -379,7 +401,7 @@ class ConfigBuilder {
             }
         };
 
-        config.devtool = this.sourceMaps && env.MINIMIFY ? 'source-map' : this.sourceMaps ? 'eval-source-map' : false;
+        config.devtool = this.sourceMaps && env.MINIMIFY ? "source-map" : this.sourceMaps ? "eval-source-map" : false;
 
         return config;
     }
@@ -396,7 +418,6 @@ class ConfigBuilder {
     toWebpackConfig(env = {}, customConf = {}) {
         return defaultsDeep(customConf, this._buildConfig(env));
     }
-
 }
 
 export default ConfigBuilder;
