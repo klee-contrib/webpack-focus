@@ -1,6 +1,6 @@
 {
     "name": "webpack-focus",
-    "version": "4.0.0-rc1",
+    "version": "4.0.0-rc2",
     "description": "Focus webpack config",
     "main": "./index.js",
     "bin": {
