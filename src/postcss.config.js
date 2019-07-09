@@ -22,7 +22,7 @@ export default ({ file, _options, env }) => {
             "postcss-color-function": true,
             "postcss-preset-env": {
                 stage: 3,
-                browsers: browsers.split("|"),
+                overrideBrowserslist: browsers.split("|"),
                 features: {
                     "nesting-rules": true
                 }
