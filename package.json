@@ -68,7 +68,7 @@
         "postcss-normalize": "7.0.1",
         "postcss-preset-env": "6.5.0",
         "react-dev-utils": "7.0.1",
-        "react-hot-loader": "4.12.1",
+        "react-hot-loader": "4.12.6",
         "sass-loader": "7.1.0",
         "source-map-loader": "0.2.4",
         "style-loader": "0.23.1",
