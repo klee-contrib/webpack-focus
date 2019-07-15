@@ -45,7 +45,7 @@
         "lodash": "4.17.14"
     },
     "dependencies": {
-        "autoprefixer": "8.1.0",
+        "autoprefixer": "8.6.5",
         "babel-loader": "8.0.6",
         "babel-preset-focus": "2.0.0-alpha5",
         "cache-loader": "2.0.1",
