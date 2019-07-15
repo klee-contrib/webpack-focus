@@ -50,7 +50,7 @@
         "babel-preset-focus": "2.0.0-alpha5",
         "cache-loader": "2.0.1",
         "case-sensitive-paths-webpack-plugin": "2.1.2",
-        "css-loader": "2.1.0",
+        "css-loader": "2.1.1",
         "cssnano": "4.1.10",
         "eslint-config-focus": "0.7.0-alpha1",
         "eslint-loader": "2.1.2",
