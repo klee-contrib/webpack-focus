@@ -48,7 +48,7 @@
         "autoprefixer": "8.1.0",
         "babel-loader": "8.0.6",
         "babel-preset-focus": "2.0.0-alpha5",
-        "cache-loader": "2.0.1",
+        "cache-loader": "4.1.0",
         "case-sensitive-paths-webpack-plugin": "2.1.2",
         "css-loader": "2.1.0",
         "cssnano": "4.1.10",
